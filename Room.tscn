@@ -1,0 +1,21 @@
+[gd_scene format=2]
+
+[node name="Room" type="Node2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2( 30, 30 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( 140.355, 1.04783, 12.3944, 1.04783, 12.9556, 168.856, 73.5686, 167.172, 68.5175, 41.4565, 140.355, 42.0177 )
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2( 30, 570 )
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="StaticBody2D2"]
+rotation = 4.71239
+polygon = PoolVector2Array( 140.355, 1.04783, 12.3944, 1.04783, 12.9556, 168.856, 73.5686, 167.172, 68.5175, 41.4565, 140.355, 42.0177 )
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D3"]
+polygon = PoolVector2Array( 935.091, 47.016, 811.274, 205.756, 901.756, 334.336, 814.449, 405.769, 627.135, 483.551, 530.304, 351.797, 530.304, 521.649, 765.239, 556.572, 911.28, 459.74, 968.426, 297.825 )
