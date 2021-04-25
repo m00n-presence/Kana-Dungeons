@@ -9,17 +9,21 @@ var directionVector : Vector2 = Vector2.DOWN
 enum {
 	MOVE,
 	ATTACK,
-	ROLL
+	ROLL,
+	INTERACT
 }
 var currentState = MOVE
 
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 onready var brushSprite = $BrushSprite
+onready var rayCast = $RayCast2D
 
 func _ready():
 	animationTree.active = true
 	self.position = Vector2(13, 10) * 96
+	rayCast.rotation_degrees = 0
+	rayCast.enabled = false
 
 func _physics_process(delta):
 	match currentState:
@@ -29,6 +33,8 @@ func _physics_process(delta):
 			attack(delta)
 		ROLL:
 			roll(delta)
+		INTERACT:
+			interact(delta)
 	
 func move(_delta):
 	var input_Vector = Vector2.ZERO
@@ -55,6 +61,8 @@ func move(_delta):
 		currentState = ATTACK
 	elif (Input.is_action_just_pressed("roll")):
 		currentState = ROLL
+	elif (Input.is_action_just_pressed("ui_select")):
+		currentState = INTERACT
 	#$CollisionShape2D.position = Vector2(2, 68)
 
 func attack(_delta):
@@ -68,10 +76,24 @@ func roll(_delta):
 
 func on_attack_animation_finished():
 	currentState = MOVE
-	brushSprite.attack_finished(directionVector)
-	
+	brushSprite.attack_finished(directionVector)	
 
 func on_roll_animation_finished():
 	currentState = MOVE
 
+func change_raycast_length(facing_vertical: bool):
+	if (facing_vertical):
+		rayCast.cast_to.y = 100
+	else:
+		rayCast.cast_to.y = 60
+
+func interact(_delta):
+	animationState.travel("Idle")
+	rayCast.force_raycast_update()
+	var collider = rayCast.get_collider()
+	if (collider != null):
+		if (collider.is_in_group("pedestals")):
+			collider.interact_with_player()
+	currentState = MOVE
+	
 
