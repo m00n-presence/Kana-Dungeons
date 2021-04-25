@@ -36,7 +36,7 @@ func place_enemies(rooms_rects):
 	var length_to_previous_room: int = 0
 	var enemy_count: int = 10
 	for room in rooms_rects:
-		if room.size.x < 2 || room.size.y < 2 || rooms_since_last_enemy <= 2:
+		if room.size.x < 2 || room.size.y < 2 || rooms_since_last_enemy <= 2: 
 			rooms_since_last_enemy += 1
 			continue
 		var tile_position: Vector2 = room.position + room.size / 2
