@@ -498,13 +498,15 @@ animations = [ {
 
 [node name="PlayerBody" type="KinematicBody2D"]
 position = Vector2( -8, 0 )
+collision_layer = 2
+collision_mask = 9
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 vframes = 4
 hframes = 14
-frame = 42
+frame = 51
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 8, 64 )
@@ -543,4 +545,5 @@ script = ExtResource( 4 )
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 position = Vector2( 0, 64 )
-cast_to = Vector2( 0, 60 )
+cast_to = Vector2( 0, 40 )
+collision_mask = 8
