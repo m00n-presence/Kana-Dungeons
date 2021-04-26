@@ -21,7 +21,7 @@ onready var rayCast = $RayCast2D
 
 func _ready():
 	animationTree.active = true
-	self.position = Vector2(13, 10) * 96
+	#self.position = Vector2(13, 10) * 96
 	rayCast.rotation_degrees = 0
 	rayCast.enabled = false
 
