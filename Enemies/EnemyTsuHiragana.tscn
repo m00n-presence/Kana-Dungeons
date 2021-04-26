@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Enemies/EnemyTsuHiragana.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/hiraganaTsu.png" type="Texture" id=2]
 [ext_resource path="res://Enemies/PlayerDetectionZone.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Enemies/WanderController.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 15.0
@@ -32,6 +33,9 @@ rect = Rect2( -35, -38, 75, 45 )
 
 [node name="CollisionShape2D" parent="PlayerDetectionZone" index="0"]
 shape = SubResource( 2 )
+
+[node name="WanderController" parent="." instance=ExtResource( 4 )]
+wander_range = 150
 [connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_entered"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
 
