@@ -18,6 +18,7 @@ onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 onready var brushSprite = $BrushSprite
 onready var rayCast = $RayCast2D
+onready var weaponHitbox = $Position2D/WeaponHitbox
 
 func _ready():
 	animationTree.active = true
@@ -44,6 +45,7 @@ func move(_delta):
 	
 	if input_Vector != Vector2.ZERO:
 		directionVector = input_Vector
+		weaponHitbox.knockback_vector = input_Vector
 		brushSprite.change_resting_position(directionVector)
 		animationTree.set("parameters/Idle/blend_position", input_Vector)
 		animationTree.set("parameters/Go/blend_position", input_Vector)
