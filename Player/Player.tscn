@@ -1,9 +1,10 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://Player/PlayerFullAnimation.png" type="Texture" id=1]
 [ext_resource path="res://Player/PlayerBody.gd" type="Script" id=2]
 [ext_resource path="res://Player/BrushAnimation288x169.png" type="Texture" id=3]
 [ext_resource path="res://Player/Brush.gd" type="Script" id=4]
+[ext_resource path="res://Overlap/Hitbox.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 14.1248
@@ -39,6 +40,30 @@ tracks/1/keys = {
 "method": "on_attack_animation_finished"
 } ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("Position2D:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Position2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -4, -40 ) ]
+}
 
 [sub_resource type="Animation" id=3]
 resource_name = "AttackLeft"
@@ -69,6 +94,30 @@ tracks/1/keys = {
 "args": [  ],
 "method": "on_attack_animation_finished"
 } ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Position2D:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Position2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -10, -70 ) ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -101,6 +150,30 @@ tracks/1/keys = {
 "method": "on_attack_animation_finished"
 } ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("Position2D:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ -90.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Position2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 4, -70 ) ]
+}
 
 [sub_resource type="Animation" id=5]
 resource_name = "AttackUp"
@@ -131,6 +204,30 @@ tracks/1/keys = {
 "args": [  ],
 "method": "on_attack_animation_finished"
 } ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Position2D:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 180.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Position2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -4, -40 ) ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -496,6 +593,10 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="CapsuleShape2D" id=49]
+radius = 50.0
+height = 85.0
+
 [node name="PlayerBody" type="KinematicBody2D"]
 collision_layer = 2
 collision_mask = 9
@@ -506,7 +607,7 @@ texture = ExtResource( 1 )
 offset = Vector2( -10, -84 )
 vframes = 4
 hframes = 14
-frame = 43
+frame = 12
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -4, -16 )
@@ -540,6 +641,8 @@ parameters/Roll/blend_position = Vector2( 0, 0 )
 [node name="BrushSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 25, -60 )
 frames = SubResource( 48 )
+animation = "attack"
+frame = 1
 script = ExtResource( 4 )
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
@@ -547,3 +650,17 @@ position = Vector2( -8, -16 )
 rotation = 3.14159
 cast_to = Vector2( 0, 40 )
 collision_mask = 8
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( 4, -70 )
+rotation = -1.5708
+
+[node name="WeaponHitbox" parent="Position2D" instance=ExtResource( 5 )]
+position = Vector2( 0, 91 )
+collision_mask = 16
+
+[node name="CollisionShape2D" parent="Position2D/WeaponHitbox" index="0"]
+rotation = 1.5708
+shape = SubResource( 49 )
+
+[editable path="Position2D/WeaponHitbox"]
