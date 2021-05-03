@@ -3,7 +3,11 @@ extends "res://Stats.gd"
 const DAMAGE_MODIFIER_WRONG_KANA: float = 0.5
 
 export(int) var player_damage = 2 
-var attack_kana: String = "tsu" 
+var attack_kana: String = "tsu"
+
+func _ready():
+	max_health = 10
+	current_health = max_health
 
 func get_damage_for_kana(kana: String) -> int:
 	if (kana == attack_kana):
