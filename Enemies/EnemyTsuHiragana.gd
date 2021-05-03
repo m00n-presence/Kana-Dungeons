@@ -17,6 +17,7 @@ var health: int = 3
 onready var detectionZone = $PlayerDetectionZone
 onready var sprite = $Sprite
 onready var wanderController = $WanderController
+onready var stats = $Stats
 var kana_spirit: PackedScene
 
 func _ready():
@@ -65,12 +66,11 @@ func randomize_state_and_start_wander_time() -> void:
 
 func _on_Hurtbox_area_entered(area):
 	knockback = area.knockback_vector * 475
-	health -= 1
-	if health <= 0:
-		#var Kana_spirit = load("res://Kana_Spirits/Tsu.tscn")
-		var parent = self.get_parent()
-		var tsu_spirit = kana_spirit.instance()
-		tsu_spirit.position = self.position
-		parent.call_deferred("add_child", tsu_spirit)
-		self.queue_free()
+	stats.current_health -= 1
 
+func _on_Stats_no_health_left():
+	var parent = self.get_parent()
+	var tsu_spirit = kana_spirit.instance()
+	tsu_spirit.position = self.position
+	parent.call_deferred("add_child", tsu_spirit)
+	self.queue_free()

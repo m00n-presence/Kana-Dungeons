@@ -50,11 +50,13 @@ rotation = 1.5708
 shape = SubResource( 3 )
 
 [node name="Stats" parent="." instance=ExtResource( 6 )]
+max_health = 3
 
 [node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
 rect = Rect2( -35, -38, 75, 45 )
 physics_process_parent = true
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
+[connection signal="no_health_left" from="Stats" to="." method="_on_Stats_no_health_left"]
 
 [editable path="PlayerDetectionZone"]
 
