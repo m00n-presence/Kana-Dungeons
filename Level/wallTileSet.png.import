@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/uncompleteTileset.png-944a3be2a9edefaf0ebcfe04b08b0b27.stex"
+path="res://.import/wallTileSet.png-8f43de34e9486d1b0b7dde43254d58bd.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Level/uncompleteTileset.png"
-dest_files=[ "res://.import/uncompleteTileset.png-944a3be2a9edefaf0ebcfe04b08b0b27.stex" ]
+source_file="res://Level/wallTileSet.png"
+dest_files=[ "res://.import/wallTileSet.png-8f43de34e9486d1b0b7dde43254d58bd.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

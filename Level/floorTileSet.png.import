@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/uncompleteFloorSet.png-55dc92ae4aaf8ef55c21d09f372cf2f8.stex"
+path="res://.import/floorTileSet.png-4aa094fc50a67b97e84b508d2d976c2d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Level/uncompleteFloorSet.png"
-dest_files=[ "res://.import/uncompleteFloorSet.png-55dc92ae4aaf8ef55c21d09f372cf2f8.stex" ]
+source_file="res://Level/floorTileSet.png"
+dest_files=[ "res://.import/floorTileSet.png-4aa094fc50a67b97e84b508d2d976c2d.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
