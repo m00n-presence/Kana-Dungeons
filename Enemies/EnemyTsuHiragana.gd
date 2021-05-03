@@ -3,6 +3,7 @@ extends KinematicBody2D
 const SPEED: int = 150
 const FRICTION: int = 400
 const ACCELERATION: int = 400
+const KANA: String = "tsu"
 
 enum STATES {
 	IDLE,
@@ -66,7 +67,8 @@ func randomize_state_and_start_wander_time() -> void:
 
 func _on_Hurtbox_area_entered(area):
 	knockback = area.knockback_vector * 475
-	stats.current_health -= 1
+	stats.current_health -= PlayerStats.get_damage_for_kana(KANA)
+	print(stats.current_health)
 
 func _on_Stats_no_health_left():
 	var parent = self.get_parent()
