@@ -13,6 +13,7 @@ enum{
 var knockback: Vector2 = Vector2.ZERO
 var state = IDLE
 var velocity: Vector2 = Vector2.ZERO
+var health: int = 3
 var detectionZone
 var sprite
 var wanderController
@@ -70,3 +71,12 @@ func _on_VisibilityNotifier2D_screen_exited():
 
 func _on_Hurtbox_area_entered(area):
 	knockback = area.knockback_vector * 475
+	health -= 1
+	if health <= 0:
+		var Kana_spirit = load("res://Kana_Spirits/Tsu.tscn")
+		var parent = self.get_parent()
+		var tsu_spirit = Kana_spirit.instance()
+		tsu_spirit.position = self.position
+		parent.call_deferred("add_child", tsu_spirit)
+		self.queue_free()
+
