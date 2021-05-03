@@ -15,11 +15,13 @@ var knockback: Vector2 = Vector2.ZERO
 var state = STATES.IDLE
 var velocity: Vector2 = Vector2.ZERO
 var health: int = 3
+
 onready var detectionZone = $PlayerDetectionZone
 onready var sprite = $Sprite
 onready var wanderController = $WanderController
 onready var stats = $Stats
 var kana_spirit: PackedScene
+
 
 func _ready():
 	self.set_physics_process(false)
