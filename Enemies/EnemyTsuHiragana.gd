@@ -3,80 +3,78 @@ extends KinematicBody2D
 const SPEED: int = 150
 const FRICTION: int = 400
 const ACCELERATION: int = 400
+const KANA: String = "tsu"
 
-enum{
+enum STATES {
 	IDLE,
 	WANDER,
 	CHASE
 }
 
 var knockback: Vector2 = Vector2.ZERO
-var state = IDLE
+var state = STATES.IDLE
 var velocity: Vector2 = Vector2.ZERO
 var health: int = 3
-var detectionZone
-var sprite
-var wanderController
+
+onready var detectionZone = $PlayerDetectionZone
+onready var sprite = $Sprite
+onready var wanderController = $WanderController
+onready var stats = $Stats
+var kana_spirit: PackedScene
+
 
 func _ready():
 	self.set_physics_process(false)
-	detectionZone = self.get_node("PlayerDetectionZone")
-	sprite = self.get_node("Sprite")
-	wanderController = self.get_node("WanderController")
+	kana_spirit = load("res://Kana_Spirits/Tsu.tscn")
 
 func _physics_process(delta):
 	knockback = knockback.move_toward(Vector2.ZERO, FRICTION * delta)
 	knockback = move_and_slide(knockback)
 	match state:
-		IDLE:
+		STATES.IDLE:
 			velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 			seek_player()
 			if wanderController.get_time_left() == 0:
-				state = pick_random_state([IDLE, WANDER], delta)
-				wanderController.start_wander_timer(rand_range(1 , 3))
-		WANDER:
+				randomize_state_and_start_wander_time()
+		STATES.WANDER:
 			seek_player()
 			if wanderController.get_time_left() == 0:
-				state = pick_random_state([IDLE, WANDER], delta)
-				wanderController.start_wander_timer(rand_range(1 , 3))
-			var dir: Vector2 = global_position.direction_to(wanderController.target_position)
-			velocity = velocity.move_toward(dir * SPEED, ACCELERATION * delta)
-			#if global_position.distance_to(wanderController.target_position) <= SPEED / 2:
-			#	state = pick_random_state([IDLE, WANDER], delta)
-			#	wanderController.start_wander_timer(rand_range(1 , 3))
-		CHASE:
+				randomize_state_and_start_wander_time()
+			change_velocity(delta, wanderController.target_position)
+			if global_position.distance_to(wanderController.target_position) <= SPEED / 2:
+				randomize_state_and_start_wander_time()
+		STATES.CHASE:
 			var player = detectionZone.player
 			if player != null:
-				var dir: Vector2 = global_position.direction_to(player.global_position)#(player.global_position - self.global_position).normalized()
-				velocity = velocity.move_toward(dir * SPEED, ACCELERATION * delta)
+				change_velocity(delta, player.global_position)
 			else:
-				state = IDLE
+				state = STATES.IDLE
 			sprite.flip_h = velocity.x < 0
 	velocity = move_and_slide(velocity)
 
 func seek_player():
 	if detectionZone.can_see_player():
-		state = CHASE
+		state = STATES.CHASE
 
-func pick_random_state(states, delta):
+func pick_random_state(states):
 	return states[randi() % 2]
 
-func _on_VisibilityNotifier2D_screen_entered():
-	self.set_physics_process(true)
+func change_velocity(delta, to_position: Vector2) -> void:
+	var dir: Vector2 = global_position.direction_to(to_position)
+	velocity = velocity.move_toward(dir * SPEED, ACCELERATION * delta)
 
-
-func _on_VisibilityNotifier2D_screen_exited():
-	self.set_physics_process(false)
-
+func randomize_state_and_start_wander_time() -> void:
+	state = STATES.values()[randi() % 2] 
+	wanderController.start_wander_timer(rand_range(1 , 3))
 
 func _on_Hurtbox_area_entered(area):
 	knockback = area.knockback_vector * 475
-	health -= 1
-	if health <= 0:
-		var Kana_spirit = load("res://Kana_Spirits/Tsu.tscn")
-		var parent = self.get_parent()
-		var tsu_spirit = Kana_spirit.instance()
-		tsu_spirit.position = self.position
-		parent.call_deferred("add_child", tsu_spirit)
-		self.queue_free()
+	stats.current_health -= PlayerStats.get_damage_for_kana(KANA)
+	print(stats.current_health)
 
+func _on_Stats_no_health_left():
+	var parent = self.get_parent()
+	var tsu_spirit = kana_spirit.instance()
+	tsu_spirit.position = self.position
+	parent.call_deferred("add_child", tsu_spirit)
+	self.queue_free()

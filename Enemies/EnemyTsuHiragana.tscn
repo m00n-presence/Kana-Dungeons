@@ -1,10 +1,12 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Enemies/EnemyTsuHiragana.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/hiraganaTsu.png" type="Texture" id=2]
 [ext_resource path="res://Enemies/PlayerDetectionZone.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Enemies/WanderController.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Overlap/Hurtbox.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Stats.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Overlap/Hitbox.tscn" type="PackedScene" id=7]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 15.0
@@ -17,9 +19,13 @@ radius = 208.0
 radius = 27.0
 height = 25.0
 
+[sub_resource type="CapsuleShape2D" id=4]
+radius = 19.0
+height = 13.0
+
 [node name="Tsu" type="KinematicBody2D"]
 collision_layer = 4
-collision_mask = 5
+collision_mask = 13
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -30,9 +36,6 @@ texture = ExtResource( 2 )
 position = Vector2( 0, -5 )
 rotation = 1.5708
 shape = SubResource( 1 )
-
-[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
-rect = Rect2( -35, -38, 75, 45 )
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 3 )]
 modulate = Color( 0.917647, 0.917647, 0.0784314, 0.756863 )
@@ -47,13 +50,34 @@ wander_range = 150
 collision_layer = 16
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0"]
+modulate = Color( 0.898039, 0.0588235, 0.968627, 1 )
+self_modulate = Color( 0.886275, 0.886275, 0.886275, 1 )
 position = Vector2( 0, -17 )
 rotation = 1.5708
 shape = SubResource( 3 )
-[connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_entered"]
-[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+
+[node name="Stats" parent="." instance=ExtResource( 6 )]
+max_health = 3
+
+[node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
+rect = Rect2( -35, -38, 75, 45 )
+physics_process_parent = true
+
+[node name="Hitbox" parent="." instance=ExtResource( 7 )]
+modulate = Color( 0.305882, 0.113725, 0.113725, 1 )
+self_modulate = Color( 0.298039, 0.156863, 0.156863, 1 )
+collision_mask = 32
+damage = 2
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+position = Vector2( 8, -16 )
+rotation = 1.5708
+shape = SubResource( 4 )
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
+[connection signal="no_health_left" from="Stats" to="." method="_on_Stats_no_health_left"]
 
 [editable path="PlayerDetectionZone"]
 
 [editable path="Hurtbox"]
+
+[editable path="Hitbox"]
