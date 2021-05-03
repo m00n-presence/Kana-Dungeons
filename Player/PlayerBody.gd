@@ -19,6 +19,7 @@ onready var animationState = animationTree.get("parameters/playback")
 onready var brushSprite = $BrushSprite
 onready var rayCast = $RayCast2D
 onready var weaponHitbox = $Position2D/WeaponHitbox
+onready var hurtbox = $Hurtbox
 
 func _ready():
 	PlayerStats.connect("no_health_left", self, "queue_free")
@@ -74,14 +75,16 @@ func attack(_delta):
 func roll(_delta):
 	velocity = directionVector * ROLLING_SPEED
 	animationState.travel("Roll")
+	hurtbox.is_invincible = true
 	velocity = move_and_slide(velocity)
 
 func on_attack_animation_finished():
 	currentState = MOVE
-	brushSprite.attack_finished(directionVector)	
+	brushSprite.attack_finished(directionVector)
 
 func on_roll_animation_finished():
 	currentState = MOVE
+	hurtbox.is_invincible = false
 
 func change_raycast_length(facing_vertical: bool):
 	if (facing_vertical):
@@ -100,4 +103,4 @@ func interact(_delta):
 
 func _on_Hurtbox_area_entered(area):
 	PlayerStats.current_health -= area.damage
-	print(PlayerStats.current_health)
+	hurtbox.start_invincibility(1.0)

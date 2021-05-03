@@ -661,7 +661,7 @@ texture = ExtResource( 1 )
 offset = Vector2( -10, -84 )
 vframes = 4
 hframes = 14
-frame = 42
+frame = 13
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -4, -16 )
@@ -707,7 +707,6 @@ collision_mask = 8
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( -4, -40 )
-rotation = 3.14159
 
 [node name="WeaponHitbox" parent="Position2D" instance=ExtResource( 5 )]
 position = Vector2( 0, 91 )
