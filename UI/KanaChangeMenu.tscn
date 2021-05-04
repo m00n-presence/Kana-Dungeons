@@ -22,6 +22,8 @@
 
 [node name="KanaChangeMenu" type="Sprite"]
 pause_mode = 2
+z_index = 10
+z_as_relative = false
 texture = ExtResource( 1 )
 offset = Vector2( 960, 540 )
 script = ExtResource( 2 )
