@@ -1,0 +1,65 @@
+[gd_scene format=2]
+
+[node name="MarginContainer" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 500, 700 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 100
+custom_constants/margin_top = 125
+custom_constants/margin_left = 100
+custom_constants/margin_bottom = 125
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = 100.0
+margin_top = 125.0
+margin_right = 1000.0
+margin_bottom = 675.0
+color = Color( 0.180392, 0.482353, 0.384314, 1 )
+
+[node name="QuestionLabel" type="Label" parent="ColorRect"]
+margin_left = 76.0
+margin_top = 67.0
+margin_right = 528.0
+margin_bottom = 91.0
+text = "How does this kana reads?"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button0" type="Button" parent="ColorRect" groups=[
+"AnswerButton",
+]]
+margin_left = 76.0
+margin_top = 259.0
+margin_right = 244.0
+margin_bottom = 323.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button1" type="Button" parent="ColorRect" groups=[
+"AnswerButton",
+]]
+margin_left = 276.0
+margin_top = 259.0
+margin_right = 444.0
+margin_bottom = 323.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button2" type="Button" parent="ColorRect" groups=[
+"AnswerButton",
+]]
+margin_left = 476.0
+margin_top = 259.0
+margin_right = 644.0
+margin_bottom = 323.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
