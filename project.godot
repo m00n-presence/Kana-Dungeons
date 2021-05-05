@@ -24,6 +24,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/github-integration/scripts/InvitationItem.gd"
 }, {
+"base": "Node",
+"class": "Question_Generator",
+"language": "GDScript",
+"path": "res://QuestionPedestal/Question_Generator.gd"
+}, {
 "base": "PanelContainer",
 "class": "RepositoryItem",
 "language": "GDScript",
@@ -38,6 +43,7 @@ _global_script_class_icons={
 "ContributorClass": "",
 "GistItem": "",
 "InvitationItem": "",
+"Question_Generator": "",
 "RepositoryItem": "",
 "Walker": ""
 }
@@ -96,4 +102,5 @@ pause={
 
 [rendering]
 
+quality/2d/use_nvidia_rect_flicker_workaround=true
 environment/default_environment="res://default_env.tres"

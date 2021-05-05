@@ -30,7 +30,10 @@ func _input(event):
 			enter_pause_mode()
 
 func enter_pause_mode():
-	get_tree().paused = true
+	var tree = get_tree()
+	if tree.paused:
+		return
+	tree.paused = true
 	is_in_pause_mode = true
 	print("entered pause")
 	self.show()
