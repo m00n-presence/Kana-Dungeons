@@ -1,8 +1,10 @@
-extends ColorRect
+extends MarginContainer
 
 const KANA_COUNT = 45
 
-onready var kanas = $Sprite
+signal answer_made(is_right)
+
+onready var kanas = $ColorRect/Sprite
 var answer_buttons = []
 
 var right_answer: String = ""
@@ -11,8 +13,13 @@ func _ready():
 	for button in get_tree().get_nodes_in_group("AnswerButtons"):
 		answer_buttons.append(button)
 		button.connect("pressed", self, "on_answer_pressed", [button])
+	hide()
 	# for test purposes
-	randomize_and_fill_answers(10, ["sa", "to", "wa"])
+	#randomize_and_fill_answers(10, ["sa", "to", "wa"])
+
+func show_question():
+	get_tree().paused = true
+	show()
 
 func randomize_and_fill_answers(kana_index: int, answers_array) -> void:
 	kanas.frame = kana_index
@@ -26,7 +33,10 @@ func randomize_and_fill_answers(kana_index: int, answers_array) -> void:
 func on_answer_pressed(button):
 	if button.text == right_answer:
 		print("Your answer was right")
+		emit_signal("answer_made", true)
 	else:
 		var template: String = "Wrong answer, \n this kana reads as '{right_answer}'"
 		print(template.format({"right_answer": right_answer}))
+		emit_signal("answer_made", false)
+	get_tree().paused = false
 	queue_free()
