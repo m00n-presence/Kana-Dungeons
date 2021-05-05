@@ -66,7 +66,7 @@ func place_question_pedestals(special_rooms) -> void:
 func generate_questions():
 	var generator = Question_Generator.new()
 	var question_info = {}
-	for question in QUESTION_NUMBER:
+	while question_info.size() < QUESTION_NUMBER:
 		var kana_index: int = generator.get_random_kana_index()
 		question_info[kana_index] = generator.get_random_answers_for_kana_index(kana_index, ANSWERS_COUNT)
 	generator.queue_free()
