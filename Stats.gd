@@ -7,7 +7,7 @@ signal no_health_left
 
 func set_current_health(value: int):
 	current_health = value
-	#print(current_health)
+	print(current_health)
 	if current_health <= 0:
 		current_health = 0
 		emit_signal("no_health_left") 
