@@ -5,17 +5,20 @@ enum ANSWER_STATE{
 	RIGHT_ANSWER = 1,
 	WRONG_ANSWER = 2
 }
-
 onready var sprite = $Sprite
-onready var question: PackedScene = load("res://QuestionPedestal/ControlQuestion.tscn")
+#onready var question: PackedScene = load("res://QuestionPedestal/ControlQuestion.tscn")
 
 var is_answered: bool = false
 var q
 
 func _ready():
-	q = question.instance()
+	pass
+	#q.randomize_and_fill_answers(3, ["e", "tsu", "fu"])
+
+func bind_question(question_instance, kana_index: int, possible_answers):
+	q = question_instance
 	add_child(q)
-	q.randomize_and_fill_answers(3, ["e", "tsu", "fu"])
+	q.randomize_and_fill_answers(kana_index, possible_answers)
 
 func interact_with_player():
 	if !is_answered:

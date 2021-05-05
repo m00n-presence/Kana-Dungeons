@@ -10,9 +10,11 @@ var answer_buttons = []
 var right_answer: String = ""
 
 func _ready():
-	for button in get_tree().get_nodes_in_group("AnswerButtons"):
-		answer_buttons.append(button)
-		button.connect("pressed", self, "on_answer_pressed", [button])
+	var color_rect = $ColorRect
+	for child in color_rect.get_children():
+		if child is Button:
+			answer_buttons.append(child)
+			child.connect("pressed", self, "on_answer_pressed", [child])
 	hide()
 	# for test purposes
 	#randomize_and_fill_answers(10, ["sa", "to", "wa"])
