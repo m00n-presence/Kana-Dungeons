@@ -25,4 +25,6 @@ func interact_with_player():
 		sprite.frame = ANSWER_STATE.RIGHT_ANSWER if is_right_answer else ANSWER_STATE.WRONG_ANSWER
 		print("Interaction occured")
 		canvaLayer.queue_free()
+		# restore player's health
+		PlayerStats.current_health = PlayerStats.max_health
 
