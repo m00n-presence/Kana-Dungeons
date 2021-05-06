@@ -11,4 +11,4 @@ func _ready():
 func _on_LevelRoot_level_generated(starting_pos):
 	print("signal emits")
 	var player = $PlayerBody
-	player.position = starting_pos * 96
+	player.position = starting_pos * 192

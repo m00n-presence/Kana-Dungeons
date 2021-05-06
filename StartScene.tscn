@@ -15,6 +15,6 @@ script = ExtResource( 3 )
 current = true
 limit_left = -96
 limit_top = -96
-limit_right = 2600
-limit_bottom = 2150
+limit_right = 10000
+limit_bottom = 10000
 [connection signal="level_generated" from="LevelRoot" to="." method="_on_LevelRoot_level_generated"]
