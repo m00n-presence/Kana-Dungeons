@@ -45,7 +45,8 @@ func place_enemies(rooms_rects):
 			continue
 		var enemy = tsuEnemy.instance()
 		enemy.position = tile_position * 192
-		self.add_child(enemy)
+		wallsTileMap.add_child(enemy)
+		#self.add_child(enemy)
 		rooms_since_last_enemy = 0
 		enemy_count -= 1
 		if enemy_count <= 0:
@@ -57,5 +58,6 @@ func place_question_pedestals(special_rooms) -> void:
 		var tile_pos: Vector2 = special_room.position + special_room.size / 2
 		var instanced_pedestal = pedestal.instance()
 		instanced_pedestal.position = tile_pos * 192
-		self.add_child(instanced_pedestal)
+		wallsTileMap.add_child(instanced_pedestal)
+		#self.add_child(instanced_pedestal)
 
