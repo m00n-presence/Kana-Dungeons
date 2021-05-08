@@ -9,30 +9,10 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "HBoxContainer",
-"class": "ContributorClass",
-"language": "GDScript",
-"path": "res://addons/github-integration/scripts/ContributorClass.gd"
-}, {
-"base": "PanelContainer",
-"class": "GistItem",
-"language": "GDScript",
-"path": "res://addons/github-integration/scripts/GistItem.gd"
-}, {
-"base": "HBoxContainer",
-"class": "InvitationItem",
-"language": "GDScript",
-"path": "res://addons/github-integration/scripts/InvitationItem.gd"
-}, {
 "base": "Node",
 "class": "Question_Generator",
 "language": "GDScript",
 "path": "res://QuestionPedestal/Question_Generator.gd"
-}, {
-"base": "PanelContainer",
-"class": "RepositoryItem",
-"language": "GDScript",
-"path": "res://addons/github-integration/scripts/RepositoryItem.gd"
 }, {
 "base": "Node",
 "class": "Walker",
@@ -40,11 +20,7 @@ _global_script_classes=[ {
 "path": "res://Level/Walker.gd"
 } ]
 _global_script_class_icons={
-"ContributorClass": "",
-"GistItem": "",
-"InvitationItem": "",
 "Question_Generator": "",
-"RepositoryItem": "",
 "Walker": ""
 }
 
@@ -55,11 +31,6 @@ run/main_scene="res://StartScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]
-
-PluginSettings="*res://addons/github-integration/scripts/PluginSettings.gd"
-IconLoaderGithub="*res://addons/github-integration/scripts/IconLoaderGithub.gd"
-UserData="*res://addons/github-integration/scripts/user_data.gd"
-RestHandler="*res://addons/github-integration/scenes/RestHandler.tscn"
 PlayerStats="*res://Player/PlayerStats.gd"
 
 [display]
@@ -71,7 +42,7 @@ window/size/test_height=720
 
 [editor_plugins]
 
-enabled=PoolStringArray( "github-integration" )
+enabled=PoolStringArray(  )
 
 [input]
 
@@ -102,5 +73,7 @@ pause={
 
 [rendering]
 
+quality/2d/use_pixel_snap=true
 quality/2d/use_nvidia_rect_flicker_workaround=true
+
 environment/default_environment="res://default_env.tres"

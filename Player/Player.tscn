@@ -9,8 +9,9 @@
 [ext_resource path="res://Overlap/Hurtbox.tscn" type="PackedScene" id=7]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 14.1248
-height = 21.9753
+radius = 14.0
+height = 53.0
+
 
 [sub_resource type="Animation" id=2]
 resource_name = "AttackDown"
@@ -664,7 +665,7 @@ hframes = 14
 frame = 13
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -4, -16 )
+position = Vector2( 0, -16 )
 rotation = 1.5708
 shape = SubResource( 1 )
 

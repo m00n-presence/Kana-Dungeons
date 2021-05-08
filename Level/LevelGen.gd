@@ -6,7 +6,7 @@ const ANSWERS_COUNT: int = 3
 signal level_generated(starting_pos)
 
 var borders: Rect2 = Rect2(1, 1, 25, 20)
-var player_starting_point = Vector2(13, 10) * 96
+var player_starting_point = Vector2(13, 10) * 192
 
 onready var wallsTileMap = $WallTileMap
 onready var floorTileMap = $FloorTileMap
@@ -48,8 +48,9 @@ func place_enemies(rooms_rects):
 		if tile_position == Vector2(13, 10):
 			continue
 		var enemy = tsuEnemy.instance()
-		enemy.position = tile_position * 96
-		self.add_child(enemy)
+		enemy.position = tile_position * 192
+		wallsTileMap.add_child(enemy)
+		#self.add_child(enemy)
 		rooms_since_last_enemy = 0
 		enemy_count -= 1
 		if enemy_count <= 0:
@@ -60,8 +61,9 @@ func place_question_pedestals(special_rooms) -> void:
 	for special_room in special_rooms:
 		var tile_pos: Vector2 = special_room.position + special_room.size / 2
 		var instanced_pedestal = pedestal.instance()
-		instanced_pedestal.position = tile_pos * 96
-		self.add_child(instanced_pedestal)
+		instanced_pedestal.position = tile_pos * 192
+		wallsTileMap.add_child(instanced_pedestal)
+		#self.add_child(instanced_pedestal)
 
 func generate_questions():
 	var generator = Question_Generator.new()

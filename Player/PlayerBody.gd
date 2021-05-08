@@ -24,6 +24,7 @@ onready var hurtbox = $Hurtbox
 func _ready():
 	PlayerStats.connect("no_health_left", self, "queue_free")
 	animationTree.active = true
+	self.position = Vector2(13, 10) * 192
 	rayCast.rotation_degrees = 0
 	rayCast.enabled = false
 
