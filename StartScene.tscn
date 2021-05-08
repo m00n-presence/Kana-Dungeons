@@ -1,16 +1,19 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Level/Level.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://StartScene.gd" type="Script" id=3]
+[ext_resource path="res://UI/KanaChangeMenu.tscn" type="PackedScene" id=4]
 
 [node name="World" type="Node2D"]
 script = ExtResource( 3 )
+
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 limit_left = -96
 limit_top = -96
+
 limit_right = 10000
 limit_bottom = 10000
 
@@ -20,6 +23,12 @@ limit_bottom = 10000
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="LevelRoot/WallTileMap/PlayerBody"]
 remote_path = NodePath("../../../../Camera2D")
+update_scale = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="KanaChangeMenu" parent="CanvasLayer" instance=ExtResource( 4 )]
+
 [connection signal="level_generated" from="LevelRoot" to="." method="_on_LevelRoot_level_generated"]
 
 [editable path="LevelRoot"]

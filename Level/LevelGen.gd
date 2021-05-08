@@ -1,5 +1,8 @@
 extends Node2D
 
+const QUESTION_NUMBER: int = 3
+const ANSWERS_COUNT: int = 3
+
 signal level_generated(starting_pos)
 
 var borders: Rect2 = Rect2(1, 1, 25, 20)
@@ -12,6 +15,7 @@ onready var floorTileMap = $FloorTileMap
 func _ready():
 	randomize()
 	generate_level()
+	generate_questions()
 	emit_signal("level_generated", player_starting_point)
 	
 
@@ -35,7 +39,7 @@ func place_enemies(rooms_rects):
 	var tsuEnemy = preload("res://Enemies/EnemyTsuHiragana.tscn")
 	var rooms_since_last_enemy: int = 0
 	var length_to_previous_room: int = 0
-	var enemy_count: int = 5
+	var enemy_count: int = 10
 	for room in rooms_rects:
 		if room.size.x < 2 || room.size.y < 2 || rooms_since_last_enemy <= 2: 
 			rooms_since_last_enemy += 1
@@ -53,11 +57,26 @@ func place_enemies(rooms_rects):
 			break
 
 func place_question_pedestals(special_rooms) -> void:
-	var pedestal = preload("res://QuestionPedestal/Pedestal.tscn")
+	var pedestal = load("res://QuestionPedestal/Pedestal.tscn")
 	for special_room in special_rooms:
 		var tile_pos: Vector2 = special_room.position + special_room.size / 2
 		var instanced_pedestal = pedestal.instance()
 		instanced_pedestal.position = tile_pos * 192
 		wallsTileMap.add_child(instanced_pedestal)
 		#self.add_child(instanced_pedestal)
+
+func generate_questions():
+	var generator = Question_Generator.new()
+	var question_info = {}
+	while question_info.size() < QUESTION_NUMBER:
+		var kana_index: int = generator.get_random_kana_index()
+		question_info[kana_index] = generator.get_random_answers_for_kana_index(kana_index, ANSWERS_COUNT)
+	generator.queue_free()
+	var control_question: PackedScene = load("res://QuestionPedestal/ControlQuestion.tscn")
+	var pedestals = get_tree().get_nodes_in_group("pedestals")
+	for pedestal in pedestals:
+		var kana: int = question_info.keys()[0]
+		pedestal.bind_question(control_question.instance(), kana, question_info[kana])
+		question_info.erase(kana)
+	
 
