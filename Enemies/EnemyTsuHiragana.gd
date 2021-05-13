@@ -14,7 +14,6 @@ enum STATES {
 var knockback: Vector2 = Vector2.ZERO
 var state = STATES.IDLE
 var velocity: Vector2 = Vector2.ZERO
-var health: int = 3
 
 onready var detectionZone = $PlayerDetectionZone
 onready var sprite = $Sprite
@@ -26,6 +25,7 @@ var kana_spirit: PackedScene
 func _ready():
 	self.set_physics_process(false)
 	kana_spirit = load("res://Kana_Spirits/Tsu.tscn")
+	sprite.play("default")
 
 func _physics_process(delta):
 	knockback = knockback.move_toward(Vector2.ZERO, FRICTION * delta)
@@ -49,7 +49,7 @@ func _physics_process(delta):
 				change_velocity(delta, player.global_position)
 			else:
 				state = STATES.IDLE
-			sprite.flip_h = velocity.x < 0
+	sprite.flip_h = velocity.x < 0
 	velocity = move_and_slide(velocity)
 
 func seek_player():

@@ -8,12 +8,10 @@
 [node name="World" type="Node2D"]
 script = ExtResource( 3 )
 
-
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 limit_left = -96
 limit_top = -96
-
 limit_right = 10000
 limit_bottom = 10000
 
@@ -28,7 +26,6 @@ update_scale = false
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="KanaChangeMenu" parent="CanvasLayer" instance=ExtResource( 4 )]
-
 [connection signal="level_generated" from="LevelRoot" to="." method="_on_LevelRoot_level_generated"]
 
 [editable path="LevelRoot"]
