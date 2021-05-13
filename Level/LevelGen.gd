@@ -31,6 +31,7 @@ func generate_level():
 	
 	place_question_pedestals(walker.special_rooms)
 	place_enemies(walker.rooms)
+	place_enhancing_item(walker)
 	walker.queue_free()
 	#emit_signal("level_generated", player_starting_point)
 
@@ -38,7 +39,6 @@ func place_enemies(rooms_rects):
 	#var testEnemyScene = preload("res://testEnemy.tscn")
 	var tsuEnemy = preload("res://Enemies/EnemyTsuHiragana.tscn")
 	var rooms_since_last_enemy: int = 0
-	var length_to_previous_room: int = 0
 	var enemy_count: int = 10
 	for room in rooms_rects:
 		if room.size.x < 2 || room.size.y < 2 || rooms_since_last_enemy <= 2: 
@@ -78,5 +78,16 @@ func generate_questions():
 		var kana: int = question_info.keys()[0]
 		pedestal.bind_question(control_question.instance(), kana, question_info[kana])
 		question_info.erase(kana)
-	
 
+func place_enhancing_item(walker: Walker):
+	var item = load("res://Items/item_I_hiragana.tscn")
+	var item_tile_position: Vector2 = get_room_center(walker.get_the_farthest_room(player_starting_point / 192))
+	print(item_tile_position)
+	var item_instance = item.instance()
+	item_instance.position = item_tile_position * 192 #+ Vector2(96, 96)
+	print(item_instance.position)
+	#player_starting_point = item_instance.position 
+	wallsTileMap.add_child(item_instance)
+
+func get_room_center(of_room: Rect2) -> Vector2:
+	return of_room.position + (of_room.size / 2)
