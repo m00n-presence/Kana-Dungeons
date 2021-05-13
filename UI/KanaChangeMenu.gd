@@ -6,6 +6,7 @@ var kanas = {
 	Vector2(2,1): "wa",
 	Vector2(3,1): "ra",
 	Vector2(11,1): "a",
+	Vector2(11,2): "i",
 	Vector2(8,3): "tsu"
 }
 # append remaining letters
