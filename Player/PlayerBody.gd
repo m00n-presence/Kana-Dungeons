@@ -98,7 +98,7 @@ func interact(_delta):
 	rayCast.force_raycast_update()
 	var collider = rayCast.get_collider()
 	if (collider != null):
-		#if (collider.is_in_group("pedestals")):
+		if (collider.is_in_group("interactable")):
 			collider.interact_with_player()
 	currentState = MOVE
 

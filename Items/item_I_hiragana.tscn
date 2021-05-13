@@ -11,7 +11,9 @@ height = 39.0
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 26.0
 
-[node name="I_item" type="StaticBody2D"]
+[node name="I_item" type="StaticBody2D" groups=[
+"interactable",
+]]
 collision_layer = 8
 collision_mask = 0
 script = ExtResource( 3 )
