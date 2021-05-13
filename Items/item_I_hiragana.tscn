@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Items/i_hiraganaItem.png" type="Texture" id=1]
+[ext_resource path="res://Overlap/Hurtbox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Items/item_I_hiragana.gd" type="Script" id=3]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 19.0
+height = 34.0
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 26.0
+
+[node name="I_item" type="StaticBody2D"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -25 )
+texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 1, 0 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="Hurtbox" parent="." instance=ExtResource( 2 )]
+collision_layer = 16
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+modulate = Color( 0.486275, 0.494118, 0.92549, 1 )
+position = Vector2( 1.12373, -8.24069 )
+rotation = 1.5708
+shape = SubResource( 2 )
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
+
+[editable path="Hurtbox"]
