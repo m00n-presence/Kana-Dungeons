@@ -2,6 +2,8 @@ extends StaticBody2D
 
 const KANA: String = "i"
 
+onready var hurtbox = $Hurtbox
+
 var can_interact: bool = false
 
 func interact_with_player():
@@ -16,6 +18,8 @@ func interact_with_player():
 		print("can't interact")
 
 func _on_Hurtbox_area_entered(area):
-	if PlayerStats.attack_kana == KANA:
+	var is_right_kana: bool = PlayerStats.attack_kana == KANA
+	hurtbox.show_hit_effect(is_right_kana)
+	if is_right_kana:
 		can_interact = true
 		$Hurtbox.set_deferred("monitoring", false)

@@ -19,6 +19,7 @@ onready var detectionZone = $PlayerDetectionZone
 onready var sprite = $Sprite
 onready var wanderController = $WanderController
 onready var stats = $Stats
+onready var hurtbox = $Hurtbox
 var kana_spirit: PackedScene
 
 
@@ -69,8 +70,9 @@ func randomize_state_and_start_wander_time() -> void:
 
 func _on_Hurtbox_area_entered(area):
 	knockback = area.knockback_vector * 475
+	hurtbox.show_hit_effect(KANA == PlayerStats.attack_kana)
 	stats.current_health -= PlayerStats.get_damage_for_kana(KANA)
-	print(stats.current_health)
+	#print(stats.current_health)
 
 func _on_Stats_no_health_left():
 	var parent = self.get_parent()
