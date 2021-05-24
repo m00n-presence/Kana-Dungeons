@@ -2,12 +2,12 @@ extends Sprite
 
 var is_in_pause_mode: bool = false
 var kanas = {
-	Vector2(1,1): "n",
-	Vector2(2,1): "wa",
-	Vector2(3,1): "ra",
-	Vector2(11,1): "a",
-	Vector2(11,2): "i",
-	Vector2(8,3): "tsu"
+	Vector2(1,1): 45,
+	Vector2(2,1): 43,
+	Vector2(3,1): 38,
+	Vector2(11,1): 0,
+	Vector2(11,2): 1,
+	Vector2(8,3): 17
 }
 # append remaining letters
 

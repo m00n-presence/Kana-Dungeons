@@ -3,7 +3,7 @@ extends KinematicBody2D
 const SPEED: int = 150
 const FRICTION: int = 400
 const ACCELERATION: int = 400
-const KANA = "tsu"
+const KANA = 17 #"tsu"
 
 enum STATES {
 	IDLE,
