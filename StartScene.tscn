@@ -34,7 +34,5 @@ margin_bottom = 86.0
 
 [node name="PlayerStats" parent="." instance=ExtResource( 7 )]
 [connection signal="level_generated" from="LevelRoot" to="." method="_on_LevelRoot_level_generated"]
-[connection signal="health_changed" from="PlayerStats" to="CanvasLayer/GUI" method="_on_PlayerStats_health_changed"]
-[connection signal="no_health_left" from="PlayerStats" to="CanvasLayer/GUI" method="_on_PlayerStats_no_health_left"]
 
 [editable path="LevelRoot"]
