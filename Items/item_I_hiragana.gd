@@ -1,6 +1,6 @@
 extends StaticBody2D
 
-const KANA: String = "i"
+const KANA = 1 #"i"
 
 onready var hurtbox = $Hurtbox
 
