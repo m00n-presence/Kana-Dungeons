@@ -10,4 +10,4 @@ offset = Vector2( 48, 48 )
 [node name="Area2D" parent="." instance=ExtResource( 2 )]
 position = Vector2( 48, 48 )
 kana_to_show = "Tsu"
-association_object = "tsunami"
+association_object = "цунами"

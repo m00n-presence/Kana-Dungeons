@@ -1,9 +1,13 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Kana_Spirits/KanaPopUp.gd" type="Script" id=1]
+[ext_resource path="res://GUI/Font/Comfortaa-Bold.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 40, 40 )
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 2 )
 
 [node name="Area2D" type="Area2D"]
 collision_layer = 8
@@ -14,10 +18,11 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = -70.0
+margin_left = -95.0
 margin_top = 48.0
-margin_right = 70.0
+margin_right = 95.0
 margin_bottom = 96.0
+custom_fonts/font = SubResource( 2 )
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -25,7 +30,7 @@ __meta__ = {
 
 [node name="ColorRect" type="ColorRect" parent="Label"]
 show_behind_parent = true
-margin_right = 140.0
+margin_right = 190.0
 margin_bottom = 48.0
 color = Color( 0.180392, 0.482353, 0.384314, 1 )
 __meta__ = {

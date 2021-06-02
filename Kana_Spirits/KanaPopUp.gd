@@ -5,7 +5,7 @@ export(String) var association_object = "."
 onready var textLabel = $Label
 onready var timer = $Timer
 
-var text = " How to read: {kana}\n Association: {association}"
+var text = " Как читается: {kana}\n Ассоциация: {association}"
 
 func _ready():
 	textLabel.hide()

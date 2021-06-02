@@ -32,5 +32,5 @@ script = ExtResource( 3 )
 
 [node name="Area2D" parent="." instance=ExtResource( 1 )]
 kana_to_show = "i"
-association_object = "igolka"
+association_object = "иголки"
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
