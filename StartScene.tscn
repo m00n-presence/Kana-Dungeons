@@ -31,8 +31,6 @@ update_scale = false
 margin_bottom = 86.0
 
 [node name="KanaChangeMenu" parent="CanvasLayer" instance=ExtResource( 4 )]
-
-[node name="PlayerStats" parent="." instance=ExtResource( 7 )]
 [connection signal="level_generated" from="LevelRoot" to="." method="_on_LevelRoot_level_generated"]
 
 [editable path="LevelRoot"]

@@ -12,7 +12,6 @@
 radius = 14.0
 height = 53.0
 
-
 [sub_resource type="Animation" id=2]
 resource_name = "AttackDown"
 length = 0.5
@@ -721,6 +720,7 @@ disabled = true
 
 [node name="Hurtbox" parent="." instance=ExtResource( 7 )]
 collision_layer = 32
+show_hit_effect = false
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0"]
 position = Vector2( -10, -70 )

@@ -3,7 +3,7 @@ extends KinematicBody2D
 const SPEED: int = 150
 const FRICTION: int = 400
 const ACCELERATION: int = 400
-const KANA: String = "tsu"
+const KANA = 17 #"tsu"
 
 enum STATES {
 	IDLE,
@@ -14,18 +14,19 @@ enum STATES {
 var knockback: Vector2 = Vector2.ZERO
 var state = STATES.IDLE
 var velocity: Vector2 = Vector2.ZERO
-var health: int = 3
 
 onready var detectionZone = $PlayerDetectionZone
 onready var sprite = $Sprite
 onready var wanderController = $WanderController
 onready var stats = $Stats
+onready var hurtbox = $Hurtbox
 var kana_spirit: PackedScene
 
 
 func _ready():
 	self.set_physics_process(false)
 	kana_spirit = load("res://Kana_Spirits/Tsu.tscn")
+	sprite.play("default")
 
 func _physics_process(delta):
 	knockback = knockback.move_toward(Vector2.ZERO, FRICTION * delta)
@@ -49,7 +50,7 @@ func _physics_process(delta):
 				change_velocity(delta, player.global_position)
 			else:
 				state = STATES.IDLE
-			sprite.flip_h = velocity.x < 0
+	sprite.flip_h = velocity.x < 0
 	velocity = move_and_slide(velocity)
 
 func seek_player():
@@ -69,8 +70,9 @@ func randomize_state_and_start_wander_time() -> void:
 
 func _on_Hurtbox_area_entered(area):
 	knockback = area.knockback_vector * 475
+	hurtbox.show_hit_effect(KANA == PlayerStats.attack_kana)
 	stats.current_health -= PlayerStats.get_damage_for_kana(KANA)
-	print(stats.current_health)
+	#print(stats.current_health)
 
 func _on_Stats_no_health_left():
 	var parent = self.get_parent()

@@ -8,6 +8,7 @@ radius = 26.0
 height = 0.0
 
 [node name="Pedestal" type="StaticBody2D" groups=[
+"interactable",
 "pedestals",
 ]]
 pause_mode = 2

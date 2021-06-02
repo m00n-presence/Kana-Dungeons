@@ -24,7 +24,7 @@ onready var hurtbox = $Hurtbox
 func _ready():
 	PlayerStats.connect("no_health_left", self, "queue_free")
 	animationTree.active = true
-	self.position = Vector2(13, 10) * 192
+	#self.position = Vector2(13, 10) * 192
 	rayCast.rotation_degrees = 0
 	rayCast.enabled = false
 
@@ -98,7 +98,7 @@ func interact(_delta):
 	rayCast.force_raycast_update()
 	var collider = rayCast.get_collider()
 	if (collider != null):
-		if (collider.is_in_group("pedestals")):
+		if (collider.is_in_group("interactable")):
 			collider.interact_with_player()
 	currentState = MOVE
 

@@ -69,4 +69,12 @@ func place_special_room(position: Vector2) -> void:
 			if borders.has_point(new_step):
 				steps_made.append(new_step)
 
-
+func get_the_farthest_room(startroom_position: Vector2) -> Rect2:
+	var farthest_room: Rect2 = rooms.pop_back()
+	var longest_distance: int = startroom_position.distance_to(farthest_room.position)
+	for room in rooms:
+		var distance_to_room: int = startroom_position.distance_to(room.position)
+		if  distance_to_room > longest_distance:
+			farthest_room = room
+			longest_distance = distance_to_room
+	return farthest_room
