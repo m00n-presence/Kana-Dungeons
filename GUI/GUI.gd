@@ -1,6 +1,6 @@
 extends MarginContainer
 
-onready var kana_label = $Bars/KanaIndicator/KanaBackground/Hieroglyph
+onready var kana_label = $Bars/KanaIndicator/Sprite #$Bars/KanaIndicator/KanaBackground/Hieroglyph
 onready var number_label = $Bars/LifeBar/Count/HPBackground/Number
 onready var bar = $Bars/LifeBar/TextureProgress
 onready var tween = $Tween
@@ -26,7 +26,7 @@ func update_health(new_value):
 		tween.start()
 
 func update_kana(new_kana):
-	print("new kana is " + str(new_kana))
+	kana_label.frame = new_kana
 	#kana_label.text = new_kana
 
 func _on_PlayerStats_health_changed(current_health):
