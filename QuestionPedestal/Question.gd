@@ -4,17 +4,16 @@ const KANA_COUNT = 45
 
 signal answer_made(is_right)
 
-onready var kanas = $ColorRect/Sprite
+onready var kanas = $VBoxContainer/SpriteContainer/Control/Sprite
 var answer_buttons = []
 
 var right_answer: String = ""
 
 func _ready():
-	var color_rect = $ColorRect
-	for child in color_rect.get_children():
-		if child is Button:
-			answer_buttons.append(child)
-			child.connect("pressed", self, "on_answer_pressed", [child])
+	var buttons = $VBoxContainer/MarginContainer/Buttons
+	for child in buttons.get_children():
+		answer_buttons.append(child)
+		child.connect("pressed", self, "on_answer_pressed", [child])
 	hide()
 	# for test purposes
 	#randomize_and_fill_answers(10, ["sa", "to", "wa"])
