@@ -7,6 +7,7 @@ signal level_generated(starting_pos)
 
 var borders: Rect2 = Rect2(1, 1, 25, 20)
 var player_starting_point = Vector2(13, 10) * 192
+var exit_placed: bool = false
 
 onready var wallsTileMap = $WallTileMap
 onready var floorTileMap = $FloorTileMap
@@ -78,6 +79,7 @@ func generate_questions():
 		var kana: int = question_info.keys()[0]
 		pedestal.bind_question(control_question.instance(), kana, question_info[kana])
 		question_info.erase(kana)
+		pedestal.connect("question_answered_right", self, "on_right_answer")
 
 func place_enhancing_item(walker: Walker):
 	var item = load("res://Items/item_I_hiragana.tscn")
@@ -88,6 +90,17 @@ func place_enhancing_item(walker: Walker):
 	print(item_instance.position)
 	#player_starting_point = item_instance.position 
 	wallsTileMap.add_child(item_instance)
+
+func on_right_answer():
+	if !exit_placed:
+		place_exit_door()
+
+func place_exit_door():
+	var ExitDoor: PackedScene = load("res://Level/Exit.tscn")
+	var exit = ExitDoor.instance()
+	exit.position = player_starting_point
+	wallsTileMap.add_child(exit)
+	exit_placed = true
 
 func get_room_center(of_room: Rect2) -> Vector2:
 	return of_room.position + (of_room.size / 2)

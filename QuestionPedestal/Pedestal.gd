@@ -5,6 +5,9 @@ enum ANSWER_STATE{
 	RIGHT_ANSWER = 1,
 	WRONG_ANSWER = 2
 }
+
+signal question_answered_right()
+
 onready var sprite = $Sprite
 onready var canvaLayer = $CanvasLayer
 #onready var question: PackedScene = load("res://QuestionPedestal/ControlQuestion.tscn")
@@ -27,4 +30,6 @@ func interact_with_player():
 		canvaLayer.queue_free()
 		# restore player's health
 		PlayerStats.current_health = PlayerStats.max_health
+		if is_right_answer:
+			emit_signal("question_answered_right")
 
