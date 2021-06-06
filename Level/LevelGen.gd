@@ -91,16 +91,20 @@ func place_enhancing_item(walker: Walker):
 	#player_starting_point = item_instance.position 
 	wallsTileMap.add_child(item_instance)
 
-func on_right_answer():
-	if !exit_placed:
-		place_exit_door()
-
 func place_exit_door():
 	var ExitDoor: PackedScene = load("res://Level/Exit.tscn")
 	var exit = ExitDoor.instance()
 	exit.position = player_starting_point
 	wallsTileMap.add_child(exit)
 	exit_placed = true
+	exit.connect("body_entered", self, "on_exit_entered")
+
+func on_right_answer():
+	if !exit_placed:
+		place_exit_door()
+
+func on_exit_entered(_body):
+	get_tree().reload_current_scene()
 
 func get_room_center(of_room: Rect2) -> Vector2:
 	return of_room.position + (of_room.size / 2)
