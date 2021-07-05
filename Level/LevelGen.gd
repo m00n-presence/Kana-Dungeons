@@ -63,6 +63,7 @@ func place_question_pedestals(special_rooms) -> void:
 		var tile_pos: Vector2 = special_room.position + special_room.size / 2
 		var instanced_pedestal = pedestal.instance()
 		instanced_pedestal.position = tile_pos * 192
+		print("Pedestal coordinate" + str(instanced_pedestal.position))
 		wallsTileMap.add_child(instanced_pedestal)
 		#self.add_child(instanced_pedestal)
 
@@ -84,10 +85,10 @@ func generate_questions():
 func place_enhancing_item(walker: Walker):
 	var item = load("res://Items/item_I_hiragana.tscn")
 	var item_tile_position: Vector2 = get_room_center(walker.get_the_farthest_room(player_starting_point / 192))
-	print(item_tile_position)
+	print("Item tile position" + str(item_tile_position))
 	var item_instance = item.instance()
 	item_instance.position = item_tile_position * 192 #+ Vector2(96, 96)
-	print(item_instance.position)
+	print("Item position" + str(item_instance.position))
 	#player_starting_point = item_instance.position 
 	wallsTileMap.add_child(item_instance)
 

@@ -58,11 +58,14 @@ func place_normal_room(position: Vector2) -> void:
 			if borders.has_point(new_step):
 				steps_made.append(new_step)
 
-func place_special_room(position: Vector2) -> void:
+func place_special_room(_position: Vector2) -> void:
 	var size = Vector2(3, 3)
 	var top_left_corner: Vector2 = (current_pos - size / 2).floor()
+	var room_rect: Rect2 = Rect2(top_left_corner, size)
+	if special_rooms.has(room_rect):
+		return
 	#breakpoint
-	special_rooms.append(Rect2(top_left_corner, size))
+	special_rooms.append(room_rect)
 	for x in size.x:
 		for y in size.y:
 			var new_step: Vector2 = top_left_corner + Vector2(x, y)
