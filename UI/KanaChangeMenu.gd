@@ -1,4 +1,7 @@
-extends Sprite
+extends TextureRect
+
+const X_SIZE: int = 150
+const Y_SIZE: int = 170
 
 var is_in_pause_mode: bool = false
 var kanas = {
@@ -51,16 +54,21 @@ var kanas = {
 }
 # append remaining letters
 
-onready var tiles = $TileMap
+onready var texture_size_x: int = texture.get_size().x
+
+var x_side: float = X_SIZE
+var y_side: float = Y_SIZE
 
 func _ready():
 	is_in_pause_mode = false
+	self.connect("resized", self, "on_resize")
+	on_resize()
 	self.hide()
 
 func _input(event):
 	if is_in_pause_mode && event is InputEventMouseButton && event.is_pressed():
 		var local_mouse_pos: Vector2 = get_local_mouse_position()
-		var tile_position: Vector2 = tiles.world_to_map(local_mouse_pos)
+		var tile_position: Vector2 = get_letter_vector_from_mouse_pos(local_mouse_pos)#tiles.world_to_map(local_mouse_pos)
 		if kanas.has(tile_position):
 			PlayerStats.attack_kana = kanas[tile_position]
 			exit_pause_mode()
@@ -76,11 +84,19 @@ func enter_pause_mode():
 		return
 	tree.paused = true
 	is_in_pause_mode = true
-	print("entered pause")
 	self.show()
 
 func exit_pause_mode():
 	self.hide()
 	is_in_pause_mode = false
 	get_tree().paused = false
-	print("pause exited")
+
+func on_resize():
+	var new_scale: float = rect_size.x / texture_size_x
+	x_side = ceil(X_SIZE * new_scale)
+	y_side = ceil(Y_SIZE * new_scale)
+
+func get_letter_vector_from_mouse_pos(mouse_pos: Vector2) -> Vector2:
+	var x : int = floor(mouse_pos.x / x_side)
+	var y : int = floor(mouse_pos.y / y_side)
+	return Vector2(x, y)
