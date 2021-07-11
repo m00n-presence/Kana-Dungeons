@@ -1,8 +1,8 @@
 extends KinematicBody2D
 
-const SPEED: int = 150
+const SPEED: int = 200
 const FRICTION: int = 400
-const ACCELERATION: int = 400
+const ACCELERATION: int = 450
 const KANA = 17 #"tsu"
 
 enum STATES {
