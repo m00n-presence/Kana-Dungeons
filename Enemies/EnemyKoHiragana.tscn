@@ -45,6 +45,7 @@ position = Vector2( 0, -32 )
 shape = SubResource( 2 )
 
 [node name="WanderController" parent="." instance=ExtResource( 5 )]
+wander_range = 150
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 2 )]
 
