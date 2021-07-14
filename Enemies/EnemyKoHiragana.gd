@@ -18,11 +18,13 @@ var velocity: Vector2 = Vector2.ZERO
 
 onready var detectionZone = $PlayerDetectionZone
 onready var attackZone = $PDZAttack
-onready var sprite = $Sprite
+onready var sprite = $SpritePivot/Sprite
+onready var spritePivot = $SpritePivot
 onready var wanderController = $WanderController
 onready var stats = $Stats
 onready var hurtbox = $Hurtbox
-onready var hitBox = $Hitbox
+onready var hitbox = $Hitbox
+onready var attackTimer = $Timer
 
 var kana_spirit: PackedScene
 
@@ -51,17 +53,20 @@ func _physics_process(delta):
 			if global_position.distance_to(wanderController.target_position) <= SPEED / 3:
 				randomize_state_and_start_wander_time()
 		STATES.CHASE:
-			var player = detectionZone.player
-			if player != null:
-				change_velocity(delta, player.global_position)
+			if attackZone.can_see_player():
+				state = STATES.ATTACK
 			else:
-				state = STATES.IDLE
+				var player = detectionZone.player
+				if player != null:
+					change_velocity(delta, player.global_position)
+				else:
+					state = STATES.IDLE
 		STATES.ATTACK:
 			var player = attackZone.player
 			if player != null:
-				make_attack(player)
+				make_attack(player, delta)
 			else:
-				on_AttackZone_left()
+				state = STATES.CHASE
 	velocity = move_and_slide(velocity)
 
 func seek_player() -> void:
@@ -78,8 +83,37 @@ func change_velocity(delta, to_position: Vector2) -> void:
 	var dir: Vector2 = global_position.direction_to(to_position)
 	velocity = velocity.move_toward(dir * SPEED, ACCELERATION * delta)
 
-func make_attack(player_body):
+func make_attack(player_body, delta):
+	if attackTimer.time_left > 0:
+		return
+	velocity = velocity.move_toward(Vector2.ZERO, 3 * FRICTION * delta)
 	var direction_to_player: Vector2 = global_position.direction_to(player_body.global_position)
+	hitbox.set_deferred("monitorable", true)
+	change_sprite(direction_to_player)
+	attackTimer.start(1)
+
+func change_sprite(attack_direction: Vector2)-> void:
+	if attack_direction == Vector2.ZERO:
+		sprite.modulate = Color(1, 1, 1)
+		sprite.scale.y = 1
+		set_sprite_and_hitbox_rotation(0)
+		return
+	if abs(attack_direction.x) < abs(attack_direction.y):
+		if attack_direction.y < 0:
+			set_sprite_and_hitbox_rotation(0)
+		else:
+			set_sprite_and_hitbox_rotation(180)
+	else:
+		if attack_direction.x > 0:
+			set_sprite_and_hitbox_rotation(90)
+		else:
+			set_sprite_and_hitbox_rotation(270)
+	sprite.modulate = Color(0.760784, 0.019608, 0.019608)
+	sprite.scale.y = 1.5
+
+func set_sprite_and_hitbox_rotation(value_in_degrees: float)-> void:
+	hitbox.rotation_degrees = value_in_degrees
+	spritePivot.rotation_degrees = value_in_degrees
 
 func on_DetectionZone_entered(player_body):
 	state = STATES.CHASE
@@ -95,3 +129,8 @@ func on_AttackZone_left():
 
 func on_DetectionZone_left():
 	state = STATES.IDLE
+
+func _on_Timer_timeout():
+	hitbox.set_deferred("monitorable", false)
+	change_sprite(Vector2.ZERO)
+	state = STATES.CHASE
