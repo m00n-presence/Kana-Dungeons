@@ -37,7 +37,7 @@ func generate_level():
 	#emit_signal("level_generated", player_starting_point)
 
 func place_enemies(rooms_rects):
-	#var testEnemyScene = preload("res://testEnemy.tscn")
+	var koEnemy = load("res://Enemies/EnemyKoHiragana.tscn")
 	var tsuEnemy = preload("res://Enemies/EnemyTsuHiragana.tscn")
 	var rooms_since_last_enemy: int = 0
 	var enemy_count: int = 10
@@ -48,7 +48,7 @@ func place_enemies(rooms_rects):
 		var tile_position: Vector2 = room.position + room.size / 2
 		if tile_position == Vector2(13, 10):
 			continue
-		var enemy = tsuEnemy.instance()
+		var enemy = koEnemy.instance() #tsuEnemy.instance()
 		enemy.position = tile_position * 192
 		wallsTileMap.add_child(enemy)
 		#self.add_child(enemy)

@@ -140,3 +140,12 @@ func _on_Timer_timeout():
 	change_sprite(Vector2.ZERO)
 	state = STATES.CHASE
 	attack_delay_timer.start()
+
+func _on_Hurtbox_area_entered(area):
+	knockback = area.knockback_vector * 650
+	hurtbox.show_hit_effect(KANA == PlayerStats.attack_kana)
+	stats.current_health -= PlayerStats.get_damage_for_kana(KANA)
+	#print(stats.current_health)
+
+func _on_Stats_no_health_left():
+	self.queue_free()
