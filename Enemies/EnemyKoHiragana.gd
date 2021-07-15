@@ -24,7 +24,9 @@ onready var wanderController = $WanderController
 onready var stats = $Stats
 onready var hurtbox = $Hurtbox
 onready var hitbox = $Hitbox
-onready var attackTimer = $Timer
+onready var hitbox_collision_shape = $Hitbox/CollisionShape2D
+onready var attack_anim_timer = $tempAttackAnimTimer
+onready var attack_delay_timer = $AttackDelayTimer
 
 var kana_spirit: PackedScene
 
@@ -42,11 +44,11 @@ func _physics_process(delta):
 	match state:
 		STATES.IDLE:
 			velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
-			#seek_player()
+			seek_player()
 			if wanderController.get_time_left() == 0:
 				randomize_state_and_start_wander_time()
 		STATES.WANDER:
-			#seek_player()
+			seek_player()
 			if wanderController.get_time_left() == 0:
 				randomize_state_and_start_wander_time()
 			change_velocity(delta, wanderController.target_position)
@@ -62,11 +64,12 @@ func _physics_process(delta):
 				else:
 					state = STATES.IDLE
 		STATES.ATTACK:
-			var player = attackZone.player
-			if player != null:
-				make_attack(player, delta)
-			else:
-				state = STATES.CHASE
+			if attack_anim_timer.is_stopped() && attack_delay_timer.is_stopped():
+				var player = attackZone.player
+				if player != null:
+					make_attack(player)
+				else:
+					state = STATES.CHASE
 	velocity = move_and_slide(velocity)
 
 func seek_player() -> void:
@@ -83,14 +86,12 @@ func change_velocity(delta, to_position: Vector2) -> void:
 	var dir: Vector2 = global_position.direction_to(to_position)
 	velocity = velocity.move_toward(dir * SPEED, ACCELERATION * delta)
 
-func make_attack(player_body, delta):
-	if attackTimer.time_left > 0:
-		return
-	velocity = velocity.move_toward(Vector2.ZERO, 3 * FRICTION * delta)
+func make_attack(player_body)-> void:
+	velocity = Vector2.ZERO 
 	var direction_to_player: Vector2 = global_position.direction_to(player_body.global_position)
-	hitbox.set_deferred("monitorable", true)
+	hitbox_collision_shape.set_deferred("disabled", false)
 	change_sprite(direction_to_player)
-	attackTimer.start(1)
+	attack_anim_timer.start(0.5)
 
 func change_sprite(attack_direction: Vector2)-> void:
 	if attack_direction == Vector2.ZERO:
@@ -116,21 +117,26 @@ func set_sprite_and_hitbox_rotation(value_in_degrees: float)-> void:
 	spritePivot.rotation_degrees = value_in_degrees
 
 func on_DetectionZone_entered(player_body):
-	state = STATES.CHASE
+	pass
+	#state = STATES.CHASE
 
 func on_AttackZone_entered(player_body):
-	state = STATES.ATTACK
+	pass
+	#state = STATES.ATTACK
 
 func on_AttackZone_left():
+	return
 	if detectionZone.can_see_player():
 		state = STATES.CHASE
 	else:
 		state = STATES.IDLE
 
 func on_DetectionZone_left():
-	state = STATES.IDLE
+	pass
+	#state = STATES.IDLE
 
 func _on_Timer_timeout():
-	hitbox.set_deferred("monitorable", false)
+	hitbox_collision_shape.set_deferred("disabled", true)
 	change_sprite(Vector2.ZERO)
 	state = STATES.CHASE
+	attack_delay_timer.start()
