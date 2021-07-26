@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
+"class": "Enemies_Generator",
+"language": "GDScript",
+"path": "res://Level/EnemiesGenerator.gd"
+}, {
+"base": "Node",
 "class": "Question_Generator",
 "language": "GDScript",
 "path": "res://QuestionPedestal/Question_Generator.gd"
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://Level/Walker.gd"
 } ]
 _global_script_class_icons={
+"Enemies_Generator": "",
 "Question_Generator": "",
 "Walker": ""
 }
