@@ -51,12 +51,15 @@ func change_direction() -> void:
 func place_normal_room(position: Vector2) -> void:
 	var room_size: Vector2 = Vector2(randi() % 4 + 2, randi() % 4 + 1)
 	var top_left_corner: Vector2 = (position - room_size / 2).ceil() #ceil
-	rooms.append(Rect2(top_left_corner, room_size)) #room placement 
 	for x in room_size.x:
 		for y in room_size.y:
 			var new_step: Vector2 = top_left_corner + Vector2(x, y)
 			if borders.has_point(new_step):
 				steps_made.append(new_step)
+	var new_room: Rect2 = Rect2(top_left_corner, room_size)
+	if room_size.y == 1 || is_room_inside_any_other(new_room):
+		return
+	rooms.append(new_room) #room placement 
 
 func place_special_room(_position: Vector2) -> void:
 	var size = Vector2(3, 3)
@@ -81,3 +84,9 @@ func get_the_farthest_room(startroom_position: Vector2) -> Rect2:
 			farthest_room = room
 			longest_distance = distance_to_room
 	return farthest_room
+
+func is_room_inside_any_other(room_to_check: Rect2)-> bool:
+	for room in rooms:
+		if room.encloses(room_to_check):
+			return true
+	return false
