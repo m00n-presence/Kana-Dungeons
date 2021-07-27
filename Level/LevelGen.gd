@@ -37,25 +37,19 @@ func generate_level():
 	#emit_signal("level_generated", player_starting_point)
 
 func place_enemies(rooms_rects):
-	#var testEnemyScene = preload("res://testEnemy.tscn")
-	var tsuEnemy = preload("res://Enemies/EnemyTsuHiragana.tscn")
-	var rooms_since_last_enemy: int = 0
 	var enemy_count: int = 10
-	for room in rooms_rects:
-		if room.size.x < 2 || room.size.y < 2 || rooms_since_last_enemy <= 2: 
-			rooms_since_last_enemy += 1
-			continue
-		var tile_position: Vector2 = room.position + room.size / 2
-		if tile_position == Vector2(13, 10):
-			continue
-		var enemy = tsuEnemy.instance()
-		enemy.position = tile_position * 192
-		wallsTileMap.add_child(enemy)
-		#self.add_child(enemy)
-		rooms_since_last_enemy = 0
-		enemy_count -= 1
-		if enemy_count <= 0:
-			break
+	var rooms_count: int = rooms_rects.size()
+	var hostiles_generator = Enemies_Generator.new()
+	var enemy_scenes_to_instance_count = hostiles_generator.get_enemies(enemy_count)
+	for enemy_scene_path in enemy_scenes_to_instance_count:
+		var enemy_scene: PackedScene = load(enemy_scene_path)
+		for num in enemy_scenes_to_instance_count[enemy_scene_path]:
+			var room = rooms_rects[randi() % rooms_count]
+			var room_center_tile: Vector2 = room.position + room.size / 2
+			var enemy = enemy_scene.instance()
+			enemy.position = room_center_tile * 192
+			wallsTileMap.add_child(enemy)
+	hostiles_generator.queue_free()
 
 func place_question_pedestals(special_rooms) -> void:
 	var pedestal = load("res://QuestionPedestal/Pedestal.tscn")
