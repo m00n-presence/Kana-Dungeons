@@ -497,3 +497,8 @@ cell_size = Vector2( 192, 192 )
 collision_layer = 0
 collision_mask = 0
 format = 1
+
+[node name="TestCamera" type="Camera2D" parent="."]
+position = Vector2( 2502.09, 1950.3 )
+current = true
+zoom = Vector2( 5.5, 6 )

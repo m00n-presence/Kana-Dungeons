@@ -6,12 +6,15 @@ const ANSWERS_COUNT: int = 3
 signal level_generated(starting_pos)
 
 var borders: Rect2 = Rect2(1, 1, 25, 20)
-var player_starting_point = Vector2(13, 10) * 192
+var player_starting_tile: Vector2 = Vector2(13, 10)
+var player_starting_point = player_starting_tile * 192
 var exit_placed: bool = false
 
 onready var wallsTileMap = $WallTileMap
 onready var floorTileMap = $FloorTileMap
 
+var w_rooms
+var w_spec_rooms
 
 func _ready():
 	randomize()
@@ -24,6 +27,9 @@ func generate_level():
 	var walker = Walker.new(Vector2(13, 10), borders)
 	var map = walker.walk_for(300)
 	
+	w_rooms = walker.rooms.duplicate()
+	w_spec_rooms = walker.rooms.duplicate()
+	
 	for location in map:
 		wallsTileMap.set_cellv(location, -1)
 		floorTileMap.set_cellv(location, 0)
@@ -31,23 +37,39 @@ func generate_level():
 	floorTileMap.update_bitmask_region(borders.position, borders.end)
 	
 	place_question_pedestals(walker.special_rooms)
-	place_enemies(walker.rooms)
+	place_enemies(walker)
 	place_enhancing_item(walker)
 	walker.queue_free()
+	
+	#update()
 	#emit_signal("level_generated", player_starting_point)
 
-func place_enemies(rooms_rects):
-	var enemy_count: int = 10
-	var rooms_count: int = rooms_rects.size()
-	var hostiles_generator = Enemies_Generator.new()
+# Only for debug purposes
+func _draw():
+	for rect in w_rooms:
+		var pixel_rect: Rect2 = Rect2(rect.position * 192, rect.size * 192)
+		#draw_rect(pixel_rect, Color("fb1010"), false, 10)
+	for rect in w_spec_rooms:
+		var pixel_rect: Rect2 = Rect2(rect.position * 192, rect.size * 192)
+		#draw_rect(pixel_rect, Color("fbf710"), false, 6)
+
+func place_enemies(walker):
+	var enemy_count: int = 20
+	
+	var hostiles_generator = Enemies_Generator.new(walker.rooms)
 	var enemy_scenes_to_instance_count = hostiles_generator.get_enemies(enemy_count)
+	var spawn_points = hostiles_generator.get_spawn_points(enemy_count, _get_prohibited_for_enemies_zones(walker)) 
+	
 	for enemy_scene_path in enemy_scenes_to_instance_count:
 		var enemy_scene: PackedScene = load(enemy_scene_path)
 		for num in enemy_scenes_to_instance_count[enemy_scene_path]:
-			var room = rooms_rects[randi() % rooms_count]
-			var room_center_tile: Vector2 = room.position + room.size / 2
+			#var room = rooms_rects[randi() % rooms_count]
+			#var room_center_tile: Vector2 = room.position + room.size / 2
+			var pos = spawn_points.pop_back() #spawn_points[randi() % spawn_count]
+			if pos == null:
+				continue
 			var enemy = enemy_scene.instance()
-			enemy.position = room_center_tile * 192
+			enemy.position = pos * 192 #room_center_tile * 192
 			wallsTileMap.add_child(enemy)
 	hostiles_generator.queue_free()
 
@@ -103,3 +125,12 @@ func on_exit_entered(_body):
 
 func get_room_center(of_room: Rect2) -> Vector2:
 	return of_room.position + (of_room.size / 2)
+
+func _get_prohibited_for_enemies_zones(walker: Walker):
+	var prohibited_zones = []
+	for room in walker.rooms:
+		if room.has_point(player_starting_tile):
+			prohibited_zones.append(room)
+			break
+	prohibited_zones += walker.special_rooms
+	return prohibited_zones
