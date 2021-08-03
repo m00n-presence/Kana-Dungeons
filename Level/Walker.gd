@@ -52,15 +52,18 @@ func place_normal_room(position: Vector2) -> void:
 	var room_size: Vector2 = Vector2(randi() % 4 + 2, randi() % 4 + 1)
 	var top_left_corner: Vector2 = (position - room_size / 2).ceil() #ceil
 	var new_room: Rect2 = Rect2(top_left_corner, room_size)
-	if is_room_inside_any_other(new_room):
-		return
+	#if is_room_inside_any_other(new_room):
+		#return
 	for x in room_size.x:
 		for y in room_size.y:
 			var new_step: Vector2 = top_left_corner + Vector2(x, y)
 			if borders.has_point(new_step):
 				steps_made.append(new_step)
-	if room_size.y > 1:
-		rooms.append(get_merged_room_if_possible(new_room)) #room placement 
+	var room_for_addition: Rect2 = _transform_to_room_for_addition(new_room)
+	if is_room(room_for_addition):
+		rooms.append(room_for_addition)
+	#if room_size.y > 1:
+		#rooms.append(get_merged_room_if_possible(new_room)) #room placement 
 
 func place_special_room(_position: Vector2) -> void:
 	var size = Vector2(3, 3)
@@ -114,4 +117,67 @@ func get_merged_room_if_possible(room_to_check: Rect2) -> Rect2:
 		return merged_room
 	return room_to_check
 
+func is_room(rect: Rect2) -> bool:
+	return rect.size.x > 1 && rect.size.y > 1
 
+func _transform_to_room_for_addition(rect: Rect2) -> Rect2:
+	if !is_room(rect):
+		return Rect2()
+	var in_bounds_rect: Rect2 = rect.clip(borders)
+	var merge_with = [false, Rect2()]
+	var remove_room = [false, Rect2()]
+	var cut_room = [false, Rect2(), Rect2()] # флаг; от какой комнаты отрезать; часть, кот-ю отрезать 
+	for room in rooms:
+		if room.encloses(in_bounds_rect):
+			return Rect2()
+		elif in_bounds_rect.encloses(room):
+			remove_room[0] = true
+			remove_room[1] = room
+			break
+		elif in_bounds_rect.intersects(room, true):
+			if rooms_in_same_row_column(in_bounds_rect, room):
+				merge_with[0] = true
+				merge_with[1] = room
+				break
+			else:
+				var intersection: Rect2 = in_bounds_rect.clip(room)
+				if rooms_in_same_row_column(intersection, in_bounds_rect) \
+				   && (in_bounds_rect.position == intersection.position || in_bounds_rect.end == intersection.end):
+					return _cut_off_intersection(in_bounds_rect, intersection)
+				elif room.position == intersection.position || room.end == intersection.end:
+					cut_room[0] = true
+					cut_room[1] = room
+					cut_room[2] = intersection
+					break
+	if merge_with[0]:
+		var merged_room: Rect2 = in_bounds_rect.merge(merge_with[1])
+		rooms.erase(merge_with[1])
+		return merged_room
+	if cut_room[0]:
+		var room_without_intersection: Rect2 = _cut_off_intersection(cut_room[1], cut_room[2])
+		if is_room(room_without_intersection):
+			rooms.append(room_without_intersection)
+		rooms.erase(cut_room[1])
+	if remove_room[0]:
+		rooms.erase(remove_room[1])
+	return in_bounds_rect
+
+func rooms_in_same_row_column(room1: Rect2, room2: Rect2) -> bool:
+	if (room1.position.x == room2.position.x && room1.size.x == room2.size.x) \
+	  || (room1.position.y == room2.position.y && room1.size.y == room2.size.y):
+		return true
+	return false
+
+func _cut_off_intersection(room: Rect2, intersection: Rect2) -> Rect2:
+	var residue_position: Vector2 = Vector2()
+	var width: int = room.size.x if room.size.x == intersection.size.x else room.size.x - intersection.size.x
+	var length: int = room.size.y if room.size.y == intersection.size.y else room.size.y - intersection.size.y
+	var residue_size: Vector2 = Vector2(width, length)
+	if room.position == intersection.position:
+		if room.size.x == intersection.size.x:
+			residue_position = Vector2(room.position.x, intersection.end.y)
+		else:
+			residue_position = Vector2(intersection.end.x, room.position.y)
+	else:
+		residue_position = room.position
+	return Rect2(residue_position, residue_size)

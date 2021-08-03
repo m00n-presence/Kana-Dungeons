@@ -48,7 +48,7 @@ func generate_level():
 func _draw():
 	for rect in w_rooms:
 		var pixel_rect: Rect2 = Rect2(rect.position * 192, rect.size * 192)
-		#draw_rect(pixel_rect, Color("fb1010"), false, 10)
+		draw_rect(pixel_rect, Color("fb1010"), false, 10)
 	for rect in w_spec_rooms:
 		var pixel_rect: Rect2 = Rect2(rect.position * 192, rect.size * 192)
 		#draw_rect(pixel_rect, Color("fbf710"), false, 6)
