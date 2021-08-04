@@ -54,11 +54,11 @@ func _draw():
 		#draw_rect(pixel_rect, Color("fbf710"), false, 6)
 
 func place_enemies(walker):
-	var enemy_count: int = 20
+	var enemy_count: int = 25
 	
 	var hostiles_generator = Enemies_Generator.new(walker.rooms)
 	var enemy_scenes_to_instance_count = hostiles_generator.get_enemies(enemy_count)
-	var spawn_points = hostiles_generator.get_spawn_points(enemy_count, _get_prohibited_for_enemies_zones(walker)) 
+	var spawn_points = hostiles_generator.get_spawn_points(enemy_count, _get_banned_for_enemies_zones(walker)) 
 	
 	for enemy_scene_path in enemy_scenes_to_instance_count:
 		var enemy_scene: PackedScene = load(enemy_scene_path)
@@ -69,7 +69,7 @@ func place_enemies(walker):
 			if pos == null:
 				continue
 			var enemy = enemy_scene.instance()
-			enemy.position = pos * 192 #room_center_tile * 192
+			enemy.position = pos #room_center_tile * 192
 			wallsTileMap.add_child(enemy)
 	hostiles_generator.queue_free()
 
@@ -126,11 +126,13 @@ func on_exit_entered(_body):
 func get_room_center(of_room: Rect2) -> Vector2:
 	return of_room.position + (of_room.size / 2)
 
-func _get_prohibited_for_enemies_zones(walker: Walker):
-	var prohibited_zones = []
-	for room in walker.rooms:
-		if room.has_point(player_starting_tile):
-			prohibited_zones.append(room)
-			break
+func _get_banned_for_enemies_zones(walker: Walker) -> Array:
+	var prohibited_zones: Array = []
 	prohibited_zones += walker.special_rooms
+	# образует безопасный квадрат 3х3 вокруг стартовой точки игрока  
+	var safe_radius: int = 1
+	var safe_zone_side: int = safe_radius * 2 + 1
+	var safe_zone_top_left_corner: Vector2 = Vector2(player_starting_tile.x - safe_radius, player_starting_tile.y - safe_radius)
+	var safe_zone_size: Vector2 = Vector2(safe_zone_side, safe_zone_side)
+	prohibited_zones.append(Rect2(safe_zone_top_left_corner, safe_zone_size))
 	return prohibited_zones
