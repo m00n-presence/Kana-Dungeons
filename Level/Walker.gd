@@ -52,8 +52,6 @@ func place_normal_room(position: Vector2) -> void:
 	var room_size: Vector2 = Vector2(randi() % 4 + 2, randi() % 4 + 1)
 	var top_left_corner: Vector2 = (position - room_size / 2).ceil() #ceil
 	var new_room: Rect2 = Rect2(top_left_corner, room_size)
-	#if is_room_inside_any_other(new_room):
-		#return
 	for x in room_size.x:
 		for y in room_size.y:
 			var new_step: Vector2 = top_left_corner + Vector2(x, y)
@@ -62,8 +60,6 @@ func place_normal_room(position: Vector2) -> void:
 	var room_for_addition: Rect2 = _transform_to_room_for_addition(new_room)
 	if is_room(room_for_addition):
 		rooms.append(room_for_addition)
-	#if room_size.y > 1:
-		#rooms.append(get_merged_room_if_possible(new_room)) #room placement 
 
 func place_special_room(_position: Vector2) -> void:
 	var size = Vector2(3, 3)
@@ -89,37 +85,11 @@ func get_the_farthest_room(startroom_position: Vector2) -> Rect2:
 			longest_distance = distance_to_room
 	return farthest_room
 
-# Проверяет, находится ли комната room_to_check полностью внутри любой другой комнаты из rooms
-func is_room_inside_any_other(room_to_check: Rect2)-> bool:
-	for room in rooms:
-		if room.encloses(room_to_check):
-			return true
-	return false
-
-# Если комнату room_to_check можно соединить с существующей комнатой, то возвращает 
-# результат этого соединения. Если нет - то возвращает room_to_check.
-# Комнаты можно соединить, если они пересекаются, их позиции имеют хотя бы 1 одинаковую координату, и
-# если одинаковы x - то их ширины тоже должны быть равны, если равны y - то их высоты.
-func get_merged_room_if_possible(room_to_check: Rect2) -> Rect2:
-	var possible_merge_room: Rect2 = Rect2()
-	for room in rooms:
-		if room_to_check.position.x == room.position.x:
-			if room_to_check.size.x == room.size.x && room_to_check.intersects(room, true):
-				possible_merge_room = room
-				break
-		if room_to_check.position.y == room.position.y:
-			if room_to_check.size.y == room.size.y && room_to_check.intersects(room, true):
-				possible_merge_room = room
-				break
-	if !possible_merge_room.has_no_area():
-		var merged_room: Rect2 = room_to_check.merge(possible_merge_room)
-		rooms.erase(possible_merge_room)
-		return merged_room
-	return room_to_check
-
+# Проверяет, подходит ли прямоугольник под критерии комнаты
 func is_room(rect: Rect2) -> bool:
 	return rect.size.x > 1 && rect.size.y > 1
 
+# Возвращает комнату, которую нужно добавить, с учетом уже имеющихся комнат
 func _transform_to_room_for_addition(rect: Rect2) -> Rect2:
 	if !is_room(rect):
 		return Rect2()
@@ -141,10 +111,13 @@ func _transform_to_room_for_addition(rect: Rect2) -> Rect2:
 				break
 			else:
 				var intersection: Rect2 = in_bounds_rect.clip(room)
-				if rooms_in_same_row_column(intersection, in_bounds_rect) \
-				   && (in_bounds_rect.position == intersection.position || in_bounds_rect.end == intersection.end):
-					return _cut_off_intersection(in_bounds_rect, intersection)
-				elif room.position == intersection.position || room.end == intersection.end:
+				if rooms_in_same_row_column(intersection, in_bounds_rect):
+					if in_bounds_rect.position == intersection.position || in_bounds_rect.end == intersection.end:
+						return _cut_off_intersection(in_bounds_rect, intersection)
+					else:
+						return Rect2()
+				elif rooms_in_same_row_column(intersection, room) \
+					 && (room.position == intersection.position || room.end == intersection.end):
 					cut_room[0] = true
 					cut_room[1] = room
 					cut_room[2] = intersection
@@ -162,12 +135,17 @@ func _transform_to_room_for_addition(rect: Rect2) -> Rect2:
 		rooms.erase(remove_room[1])
 	return in_bounds_rect
 
+# Проверяет, что комнаты находятся в одной "колонне" или "ряду":
+# Если одинаковы их Х-координаты и их ширины
+# или если одинаковы их Y-координаты и их длины
 func rooms_in_same_row_column(room1: Rect2, room2: Rect2) -> bool:
 	if (room1.position.x == room2.position.x && room1.size.x == room2.size.x) \
 	  || (room1.position.y == room2.position.y && room1.size.y == room2.size.y):
 		return true
 	return false
 
+# Вовращает часть от room, оставшуюся от intersection
+# Т.е. intersection и возвращаемое значение этого метода составляют room
 func _cut_off_intersection(room: Rect2, intersection: Rect2) -> Rect2:
 	var residue_position: Vector2 = Vector2()
 	var width: int = room.size.x if room.size.x == intersection.size.x else room.size.x - intersection.size.x

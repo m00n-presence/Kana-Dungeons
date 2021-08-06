@@ -40,9 +40,8 @@ func get_spawn_points(enemies_count: int, excluding_rooms: Array):
 	banned_points = _get_banned_points(excluding_rooms)
 	# В radius тайлах вокруг данной точки спавна  может быть до max_spawns_around других точек спавна
 	var radius: int = 3
-	var max_spawns_around: int = 2
+	var max_spawns_around: int = 3
 	
-	#rooms.shuffle()
 	var spawn_points = []
 	var total_spawns_count: int = 0
 	while total_spawns_count <= enemies_count && !rooms.empty():
@@ -50,8 +49,7 @@ func get_spawn_points(enemies_count: int, excluding_rooms: Array):
 		var max_spawns: int = _get_max_spawns_relative_to_rooms_around(room, room.size.x * room.size.y, max_spawns_around)
 		var room_spawn_points: Array = _get_random_spawns_in_room(room, max_spawns)
 		for possible_spawn in room_spawn_points:
-			#if !_is_radius_around_crowded(possible_spawn, radius, max_spawns_around, spawn_points):
-			spawn_points.append(shuffle_point_in_range(possible_spawn * 192, 150))
+			spawn_points.append(shuffle_point_in_range(possible_spawn * 192, 130))
 		rooms_to_spawn_count[room] = room_spawn_points.size()
 		total_spawns_count = spawn_points.size()
 	return spawn_points
@@ -109,17 +107,7 @@ func _get_max_spawns_relative_to_rooms_around(room_to_check: Rect2, spawns_in_ro
 		return 5
 	return spawns_in_room
 
-# Проверяет, что в радиусе radius от точки point не больше max_allowed_spawns 
-# точек спавна из spawn_points
-func _is_radius_around_crowded(point: Vector2, radius: int, max_allowed_spawns: int, spawn_points: Array) -> bool:
-	var spawns_around: int = 0
-	for spawn in spawn_points:
-		if point.distance_to(spawn) < radius:
-			spawns_around += 1
-		if spawns_around >= max_allowed_spawns:
-			return true
-	return false
-
+# Сортирует комнаты по возрастанию их площади пузырьковой сортировкой
 func _sort_rooms_by_size():
 	var i: int = rooms.size() - 1
 	while i > 0:
@@ -153,6 +141,8 @@ func append_range(source_array: Array, elements_to_add: Array):
 	for e in elements_to_add:
 		source_array.append(e)
 
+# Проверяет, что хотя бы 1 стена каждой комнаты находится 
+# в пределах max_tile_radius от стены другой комнаты
 func is_room_close_to_other(room1: Rect2, room2: Rect2, max_tile_radius: int)-> bool:
 	if room1.intersects(room2):
 		return true
@@ -161,5 +151,6 @@ func is_room_close_to_other(room1: Rect2, room2: Rect2, max_tile_radius: int)-> 
 	return tl1_to_br2.x <= max_tile_radius || tl1_to_br2.y <= max_tile_radius \
 		   || br1_to_tl2.x <= max_tile_radius || br1_to_tl2.y <= max_tile_radius
 
+# Возвращает площадь комнаты
 func get_room_area(room: Rect2) -> float:
 	return room.size.x * room.size.y

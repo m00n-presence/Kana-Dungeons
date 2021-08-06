@@ -54,7 +54,7 @@ func _draw():
 		#draw_rect(pixel_rect, Color("fbf710"), false, 6)
 
 func place_enemies(walker):
-	var enemy_count: int = 25
+	var enemy_count: int = 20
 	
 	var hostiles_generator = Enemies_Generator.new(walker.rooms)
 	var enemy_scenes_to_instance_count = hostiles_generator.get_enemies(enemy_count)
