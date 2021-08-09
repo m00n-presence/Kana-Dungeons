@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/spirit_BG.png-a63a1484f0032946600c0084175f05c8.stex"
+path="res://.import/tsu_anim.png-6d81a1875d481a6877bb84e70b218473.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Kana_Spirits/spirit_BG.png"
-dest_files=[ "res://.import/spirit_BG.png-a63a1484f0032946600c0084175f05c8.stex" ]
+source_file="res://Kana_Spirits/spirit_frames/tsu_anim.png"
+dest_files=[ "res://.import/tsu_anim.png-6d81a1875d481a6877bb84e70b218473.stex" ]
 
 [params]
 

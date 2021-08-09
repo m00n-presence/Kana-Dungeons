@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/spirit_BG.png-a63a1484f0032946600c0084175f05c8.stex"
+path="res://.import/i_anim.png-753b211f984430871c1e69e20837a2ee.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Kana_Spirits/spirit_BG.png"
-dest_files=[ "res://.import/spirit_BG.png-a63a1484f0032946600c0084175f05c8.stex" ]
+source_file="res://Kana_Spirits/spirit_frames/i_anim.png"
+dest_files=[ "res://.import/i_anim.png-753b211f984430871c1e69e20837a2ee.stex" ]
 
 [params]
 
