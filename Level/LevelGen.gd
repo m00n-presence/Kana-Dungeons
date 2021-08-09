@@ -63,8 +63,6 @@ func place_enemies(walker):
 	for enemy_scene_path in enemy_scenes_to_instance_count:
 		var enemy_scene: PackedScene = load(enemy_scene_path)
 		for num in enemy_scenes_to_instance_count[enemy_scene_path]:
-			#var room = rooms_rects[randi() % rooms_count]
-			#var room_center_tile: Vector2 = room.position + room.size / 2
 			var pos = spawn_points.pop_back() #spawn_points[randi() % spawn_count]
 			if pos == null:
 				continue

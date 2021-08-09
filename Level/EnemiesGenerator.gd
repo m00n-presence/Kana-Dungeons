@@ -5,8 +5,6 @@ class_name Enemies_Generator
 var enemies_scene_paths
 # Коллекция комнат, составленных Walker
 var rooms: Array
-# Допустимые границы в пикселях
-var borders: Rect2
 # Коллекция точек, на которые нельзя ставить врагов
 var banned_points
 # Словарь: комната (координаты в тайлах) - массив точек спавна внутри этой комнаты
