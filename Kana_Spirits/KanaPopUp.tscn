@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Kana_Spirits/KanaPopUp.gd" type="Script" id=1]
 [ext_resource path="res://GUI/Font/Comfortaa-Bold.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Kana_Spirits/spirit_BG.png" type="Texture" id=3]
+[ext_resource path="res://Kana_Spirits/spirit_frames_res/tsu_frames.tres" type="SpriteFrames" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 40, 40 )
@@ -44,6 +45,9 @@ __meta__ = {
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = ExtResource( 4 )
 [connection signal="body_entered" from="." to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_Area2D_body_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
