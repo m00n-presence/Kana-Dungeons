@@ -9,7 +9,7 @@ region = Rect2( 0, 0, 96, 96 )
 [resource]
 animations = [ {
 "frames": [ SubResource( 1 ) ],
-"loop": true,
+"loop": false,
 "name": "default",
 "speed": 1.0
 } ]
