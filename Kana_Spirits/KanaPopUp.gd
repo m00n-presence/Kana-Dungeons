@@ -7,17 +7,26 @@ onready var textLabel: Label = $Label
 onready var timer: Timer = $Timer
 onready var letter_sprite: AnimatedSprite = $LetterAnim
 
-var frase: String = " Как читается: {kana}\n Ассоциация: {association}"
+var phrase: String = " Как читается: {kana} \n Ассоциация: {association} "
 
-func _ready():
-	textLabel.text = frase.format({"kana": kana_to_show, "association": association_object})
+# Эту функцию нужно вызвать до того, как эта сцена станет чьим-то наследником
+# letter - прочтение слога
+func set_up(letter: String, association_obj: String) -> void:
+	_prepare_letter_animation(letter)
+	_prepare_info_template(letter, association_obj)
+
+# Подготавливает текст на табличке
+func _prepare_info_template(letter: String, association_obj: String) -> void:
+	textLabel.text = phrase.format({"kana": letter, "association": association_obj})
 	#textLabel.hide()
 	#textLabel.show()
 	textLabel.rect_size = textLabel.rect_min_size
 	textLabel.get_node("ColorRect").rect_size = textLabel.rect_size
+	textLabel.show()
 
+# Подготавливает анимацию написания буквы
 # !! ВАЖНО !! пути до spriteframes ресурсов включают транскрипцию буквы letter строчными английскими буквами.
-func set_up_letter_animation(letter: String) -> void:
+func _prepare_letter_animation(letter: String) -> void:
 	letter = letter.to_lower()
 	var frames_path: String = "res://Kana_Spirits/spirit_frames_res/" + letter + "_frames.tres"
 	var file_check: File = File.new()
@@ -33,7 +42,7 @@ func _on_Area2D_body_entered(_body):
 	textLabel.show()
 	if timer != null && timer.time_left > 0:
 		timer.stop()
-	if letter_sprite != null && letter_sprite.playing:
+	if letter_sprite != null && letter_sprite.frames != null && letter_sprite.playing:
 		letter_sprite.frame = 0
 		letter_sprite.play("default")
 
