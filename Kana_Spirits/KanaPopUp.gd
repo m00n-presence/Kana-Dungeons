@@ -12,8 +12,12 @@ var phrase: String = " Как читается: {kana} \n Ассоциация: 
 # Эту функцию нужно вызвать до того, как эта сцена станет чьим-то наследником
 # letter - прочтение слога
 func set_up(letter: String, association_obj: String) -> void:
-	_prepare_letter_animation(letter)
-	_prepare_info_template(letter, association_obj)
+	kana_to_show = letter
+	association_object = association_obj
+
+func _ready():
+	_prepare_letter_animation(kana_to_show)
+	_prepare_info_template(kana_to_show, association_object)
 
 # Подготавливает текст на табличке
 func _prepare_info_template(letter: String, association_obj: String) -> void:

@@ -25,7 +25,7 @@ var kana_spirit: PackedScene
 
 func _ready():
 	self.set_physics_process(false)
-	kana_spirit = load("res://Kana_Spirits/Tsu.tscn")
+	#kana_spirit = load("res://Kana_Spirits/Tsu.tscn")
 	sprite.play("default")
 
 func _physics_process(delta):
@@ -76,7 +76,8 @@ func _on_Hurtbox_area_entered(area):
 
 func _on_Stats_no_health_left():
 	var parent = self.get_parent()
-	var tsu_spirit = kana_spirit.instance()
+	var tsu_spirit = load("res://Kana_Spirits/KanaPopUp.tscn").instance()
+	tsu_spirit.set_up("tsu", "цунами")
 	tsu_spirit.position = self.position
 	parent.call_deferred("add_child", tsu_spirit)
 	self.queue_free()
