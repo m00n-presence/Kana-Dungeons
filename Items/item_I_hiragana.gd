@@ -18,7 +18,7 @@ func interact_with_player():
 	else:
 		print("can't interact")
 
-func _on_Hurtbox_area_entered(area):
+func _on_Hurtbox_area_entered(_area):
 	var is_right_kana: bool = PlayerStats.attack_kana == KANA
 	hurtbox.show_hit_effect(is_right_kana)
 	if is_right_kana:

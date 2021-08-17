@@ -120,11 +120,11 @@ func _sort_rooms_by_size():
 
 # Возвращает все точки спавна в запрещенных комнатах
 func _get_banned_points(banned_rooms: Array) -> Array:
-	var banned_points: Array = []
+	var ban_points: Array = []
 	for room in banned_rooms:
 		var in_room_points: Array = _get_all_possible_spawns_in_room(room, false)
-		append_range(banned_points, in_room_points)
-	return banned_points
+		append_range(ban_points, in_room_points)
+	return ban_points
 
 # Возвращает случайную точку в max_range радиусе от данной
 func shuffle_point_in_range(point: Vector2, max_range: int) -> Vector2:
