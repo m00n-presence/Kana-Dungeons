@@ -15,6 +15,7 @@ onready var floorTileMap = $FloorTileMap
 
 var w_rooms
 var w_spec_rooms
+export(bool) var show_room_borders = false
 
 func _ready():
 	randomize()
@@ -28,7 +29,7 @@ func generate_level():
 	var map = walker.walk_for(300)
 	
 	w_rooms = walker.rooms.duplicate()
-	w_spec_rooms = walker.rooms.duplicate()
+	w_spec_rooms = walker.special_rooms.duplicate()
 	
 	for location in map:
 		wallsTileMap.set_cellv(location, -1)
@@ -44,14 +45,16 @@ func generate_level():
 	#update()
 	#emit_signal("level_generated", player_starting_point)
 
-# Only for debug purposes
+# Для просмотра границ комнат
 func _draw():
+	if !show_room_borders:
+		return
 	for rect in w_rooms:
 		var pixel_rect: Rect2 = Rect2(rect.position * 192, rect.size * 192)
 		draw_rect(pixel_rect, Color("fb1010"), false, 10)
 	for rect in w_spec_rooms:
 		var pixel_rect: Rect2 = Rect2(rect.position * 192, rect.size * 192)
-		#draw_rect(pixel_rect, Color("fbf710"), false, 6)
+		draw_rect(pixel_rect, Color("fbf710"), false, 6)
 
 func place_enemies(walker):
 	var enemy_count: int = 20
